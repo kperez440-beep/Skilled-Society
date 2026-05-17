@@ -1,0 +1,623 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact — Skilled Society</title>
+    <meta name="description" content="Get in touch with Skilled Society. New Jersey streetwear built by hand.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+
+    <style>
+        :root {
+            --black:       #F2EDE5;
+            --white:       #1A1816;
+            --orange:      #7A6E62;
+            --gray:        #EAE4DB;
+            --gray-mid:    #DDD7CC;
+            --gray-border: #C4BCB2;
+            --muted:       #8A837A;
+            --display:     'Bebas Neue', sans-serif;
+            --body:        'Inter', sans-serif;
+        }
+
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+
+        body {
+            background: var(--black);
+            color: var(--white);
+            font-family: var(--body);
+            overflow-x: hidden;
+            cursor: none;
+        }
+
+        /* ── Cursor ───────────────────────────────────────────── */
+        .cursor {
+            position: fixed;
+            width: 10px; height: 10px;
+            background: var(--orange);
+            border-radius: 50%;
+            pointer-events: none; z-index: 9999;
+            transform: translate(-50%, -50%);
+            transition: width .15s, height .15s;
+        }
+        .cursor-ring {
+            position: fixed;
+            width: 38px; height: 38px;
+            border: 1px solid rgba(122,110,98,.4);
+            border-radius: 50%;
+            pointer-events: none; z-index: 9998;
+            transform: translate(-50%, -50%);
+            transition: width .2s, height .2s, border-color .2s;
+        }
+
+        /* ── Nav ──────────────────────────────────────────────── */
+        nav {
+            position: fixed; top: 0; left: 0; right: 0;
+            z-index: 1000;
+            padding: 28px 48px;
+            display: flex; align-items: center; justify-content: space-between;
+            background: rgba(242,237,229,.96);
+            backdrop-filter: blur(14px);
+            border-bottom: 1px solid var(--gray-border);
+        }
+        .nav-logo {
+            font-family: var(--display);
+            font-size: 20px; letter-spacing: .22em;
+            color: var(--white); text-decoration: none;
+        }
+        .nav-logo em { font-style: normal; color: var(--orange); }
+        .nav-links { display: flex; align-items: center; gap: 36px; }
+        .nav-links a {
+            font-size: 10px; font-weight: 500;
+            letter-spacing: .18em; text-transform: uppercase;
+            color: var(--muted); text-decoration: none; transition: color .2s;
+        }
+        .nav-links a:hover, .nav-links a.active { color: var(--white); }
+        .nav-drop {
+            font-size: 10px; font-weight: 700;
+            letter-spacing: .18em; text-transform: uppercase;
+            color: var(--orange); border: 1px solid var(--orange);
+            padding: 9px 22px; text-decoration: none;
+            transition: background .2s, color .2s;
+        }
+        .nav-drop:hover { background: var(--orange); color: var(--black); }
+
+        /* ── Page Hero ────────────────────────────────────────── */
+        .page-hero {
+            padding: 160px 48px 80px;
+            border-bottom: 1px solid var(--gray-border);
+            position: relative; overflow: hidden;
+        }
+        .page-hero-grid {
+            position: absolute; inset: 0;
+            background-image:
+                linear-gradient(rgba(26,24,22,.05) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(26,24,22,.05) 1px, transparent 1px);
+            background-size: 64px 64px;
+            pointer-events: none;
+        }
+        .eyebrow {
+            display: flex; align-items: center; gap: 12px;
+            margin-bottom: 32px; opacity: 0;
+        }
+        .eyebrow-bar { width: 28px; height: 1px; background: var(--orange); }
+        .eyebrow-label {
+            font-size: 9px; font-weight: 700;
+            letter-spacing: .3em; text-transform: uppercase; color: var(--orange);
+        }
+        .page-title {
+            font-family: var(--display);
+            font-size: clamp(64px, 11vw, 160px);
+            line-height: .9; letter-spacing: .01em;
+            opacity: 0; transform: translateY(40px);
+        }
+        .page-title em { font-style: normal; color: var(--orange); }
+        .page-hero-sub {
+            margin-top: 40px;
+            font-size: 15px; line-height: 1.8;
+            color: var(--muted); font-weight: 300;
+            max-width: 480px;
+            opacity: 0; transform: translateY(20px);
+        }
+
+        /* ── Main Layout ──────────────────────────────────────── */
+        .contact-wrap {
+            display: grid;
+            grid-template-columns: 1fr 1.6fr;
+            min-height: 70vh;
+        }
+
+        /* ── Info Panel ───────────────────────────────────────── */
+        .contact-info {
+            padding: 80px 48px;
+            border-right: 1px solid var(--gray-border);
+            display: flex; flex-direction: column; gap: 56px;
+        }
+        .info-block { display: flex; flex-direction: column; gap: 12px; }
+        .info-label {
+            font-size: 9px; font-weight: 700;
+            letter-spacing: .28em; text-transform: uppercase;
+            color: var(--orange);
+        }
+        .info-value {
+            font-family: var(--display);
+            font-size: 22px; letter-spacing: .06em;
+            color: var(--white); line-height: 1.2;
+        }
+        .info-sub {
+            font-size: 12px; color: var(--muted);
+            line-height: 1.7; letter-spacing: .03em;
+        }
+        .ph-note { font-size: 9px; color: var(--gray-border); font-style: italic; }
+
+        .info-divider {
+            width: 28px; height: 1px;
+            background: var(--gray-border);
+        }
+
+        .social-links { display: flex; flex-direction: column; gap: 10px; }
+        .social-link {
+            display: flex; align-items: center; gap: 12px;
+            font-size: 11px; font-weight: 500;
+            letter-spacing: .12em; text-transform: uppercase;
+            color: var(--muted); text-decoration: none;
+            transition: color .2s;
+        }
+        .social-link:hover { color: var(--white); }
+        .social-link-arrow {
+            font-size: 14px; transition: transform .2s;
+        }
+        .social-link:hover .social-link-arrow { transform: translateX(4px); }
+
+        .response-note {
+            margin-top: auto;
+            padding-top: 40px;
+            border-top: 1px solid var(--gray-border);
+            font-size: 11px; line-height: 1.7;
+            color: var(--muted);
+        }
+
+        /* ── Form Panel ───────────────────────────────────────── */
+        .contact-form-wrap {
+            padding: 80px 64px;
+        }
+        .form-title {
+            font-family: var(--display);
+            font-size: clamp(32px, 3.5vw, 52px);
+            letter-spacing: .04em; line-height: 1;
+            margin-bottom: 48px;
+            opacity: 0; transform: translateY(20px);
+        }
+        .form-title em { font-style: normal; color: var(--orange); }
+
+        .contact-form { display: flex; flex-direction: column; gap: 24px; }
+
+        .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+
+        .field { display: flex; flex-direction: column; gap: 8px; }
+        .field-label {
+            font-size: 9px; font-weight: 700;
+            letter-spacing: .22em; text-transform: uppercase;
+            color: var(--orange);
+        }
+        .field input,
+        .field select,
+        .field textarea {
+            background: var(--gray);
+            border: 1px solid var(--gray-border);
+            color: var(--white);
+            font-family: var(--body); font-size: 13px;
+            padding: 14px 18px; outline: none;
+            transition: border-color .2s, background .2s;
+            appearance: none;
+            -webkit-appearance: none;
+        }
+        .field input::placeholder,
+        .field textarea::placeholder { color: var(--muted); }
+        .field input:focus,
+        .field select:focus,
+        .field textarea:focus {
+            border-color: var(--orange);
+            background: var(--gray-mid);
+        }
+        .field select {
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%238A837A' stroke-width='1.5' fill='none'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 18px center;
+            padding-right: 44px;
+            cursor: none;
+            color: var(--white);
+        }
+        .field select option { background: #EAE4DB; color: #1A1816; }
+        .field textarea { resize: vertical; min-height: 140px; line-height: 1.6; }
+
+        .form-submit {
+            display: flex; align-items: center;
+            justify-content: space-between; flex-wrap: wrap; gap: 16px;
+            padding-top: 8px;
+        }
+        .submit-note {
+            font-size: 11px; color: var(--muted); letter-spacing: .04em;
+        }
+        .submit-btn {
+            font-family: var(--display);
+            font-size: 18px; letter-spacing: .12em;
+            color: var(--black);
+            background: var(--white);
+            border: 1px solid var(--white);
+            padding: 14px 40px;
+            cursor: none;
+            transition: background .2s, color .2s, border-color .2s;
+        }
+        .submit-btn:hover {
+            background: transparent;
+            color: var(--white);
+        }
+
+        /* ── Success State ────────────────────────────────────── */
+        .form-success {
+            display: none;
+            flex-direction: column; align-items: flex-start; gap: 16px;
+            padding: 48px;
+            background: var(--gray);
+            border: 1px solid var(--gray-border);
+        }
+        .form-success.show { display: flex; }
+        .success-icon {
+            font-family: var(--display);
+            font-size: 52px; color: var(--orange); line-height: 1;
+        }
+        .success-title {
+            font-family: var(--display);
+            font-size: 32px; letter-spacing: .06em;
+        }
+        .success-text {
+            font-size: 13px; color: var(--muted); line-height: 1.7;
+        }
+
+        /* ── FAQ Strip ────────────────────────────────────────── */
+        .faq {
+            background: var(--gray);
+            border-top: 1px solid var(--gray-border);
+            padding: 80px 48px;
+        }
+        .faq-title {
+            font-family: var(--display);
+            font-size: clamp(32px, 4vw, 56px);
+            letter-spacing: .04em; margin-bottom: 48px;
+        }
+        .faq-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1px; background: var(--gray-border);
+            border: 1px solid var(--gray-border);
+        }
+        .faq-item {
+            background: var(--gray);
+            padding: 36px 32px;
+        }
+        .faq-q {
+            font-family: var(--display);
+            font-size: 18px; letter-spacing: .06em;
+            color: var(--white); margin-bottom: 12px;
+        }
+        .faq-a {
+            font-size: 12px; line-height: 1.8;
+            color: var(--muted); font-weight: 300;
+        }
+
+        /* ── Footer ───────────────────────────────────────────── */
+        footer {
+            background: var(--black);
+            border-top: 1px solid var(--gray-border);
+            padding: 72px 48px 48px;
+        }
+        .foot-top {
+            display: flex; align-items: flex-start;
+            justify-content: space-between; flex-wrap: wrap;
+            gap: 40px; margin-bottom: 64px;
+        }
+        .foot-brand { max-width: 300px; }
+        .foot-logo {
+            font-family: var(--display);
+            font-size: 38px; letter-spacing: .1em;
+            line-height: 1; margin-bottom: 18px;
+        }
+        .foot-logo em { font-style: normal; color: var(--orange); }
+        .foot-desc { font-size: 12px; color: var(--muted); line-height: 1.8; letter-spacing: .03em; }
+        .foot-cols { display: flex; gap: 64px; flex-wrap: wrap; }
+        .foot-col-head {
+            font-size: 9px; font-weight: 700;
+            letter-spacing: .28em; text-transform: uppercase;
+            color: var(--orange); margin-bottom: 20px;
+        }
+        .foot-col a {
+            display: block; font-size: 12px;
+            color: var(--muted); text-decoration: none;
+            margin-bottom: 12px; letter-spacing: .04em; transition: color .2s;
+        }
+        .foot-col a:hover { color: var(--white); }
+        .foot-bottom {
+            border-top: 1px solid var(--gray-border); padding-top: 32px;
+            display: flex; align-items: center;
+            justify-content: space-between; flex-wrap: wrap; gap: 16px;
+        }
+        .foot-copy { font-size: 10px; color: var(--muted); letter-spacing: .1em; }
+        .foot-sig { font-family: var(--display); font-size: 13px; letter-spacing: .32em; color: var(--gray-border); }
+
+        /* ── Reveal ───────────────────────────────────────────── */
+        .reveal { opacity: 0; transform: translateY(24px); }
+
+        /* ── Responsive ───────────────────────────────────────── */
+        @media (max-width: 900px) {
+            .contact-wrap { grid-template-columns: 1fr; }
+            .contact-info { border-right: none; border-bottom: 1px solid var(--gray-border); padding: 60px 24px; }
+            .contact-form-wrap { padding: 60px 24px; }
+            .faq-grid { grid-template-columns: 1fr; }
+            .response-note { margin-top: 0; }
+        }
+        @media (max-width: 768px) {
+            nav { padding: 20px 24px; }
+            .nav-links a:not(.nav-drop) { display: none; }
+            .page-hero { padding: 120px 24px 60px; }
+            .form-row { grid-template-columns: 1fr; }
+            .faq { padding: 60px 24px; }
+            footer { padding: 60px 24px 40px; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- Cursor -->
+<div class="cursor" id="cur"></div>
+<div class="cursor-ring" id="ring"></div>
+
+<!-- Nav -->
+<nav>
+    <a href="index.html" class="nav-logo">SKILLED <em>SOCIETY</em></a>
+    <div class="nav-links">
+        <a href="about.html">About</a>
+        <a href="shop.html">Shop</a>
+        <a href="index.html#drop">The Drop</a>
+        <a href="index.html#drop" class="nav-drop">Join the Drop</a>
+    </div>
+</nav>
+
+<!-- ─────────────── PAGE HERO ─────────────── -->
+<section class="page-hero">
+    <div class="page-hero-grid"></div>
+    <div class="eyebrow" id="pgEye">
+        <div class="eyebrow-bar"></div>
+        <span class="eyebrow-label">Contact</span>
+    </div>
+    <h1 class="page-title" id="pgTitle">GET IN<br><em>TOUCH.</em></h1>
+    <p class="page-hero-sub" id="pgSub">
+        Questions about the drop, wholesale, press, or anything else — send it over. We'll get back to you.
+    </p>
+</section>
+
+<!-- ─────────────── CONTACT LAYOUT ─────────────── -->
+<div class="contact-wrap">
+
+    <!-- Info Panel -->
+    <div class="contact-info">
+
+        <div class="info-block reveal">
+            <div class="info-label">Location</div>
+            <div class="info-value">New Jersey,<br>USA</div>
+            <div class="info-sub">Based and built in NJ. All pieces made in-house.</div>
+        </div>
+
+        <div class="info-divider reveal"></div>
+
+        <div class="info-block reveal">
+            <div class="info-label">Email</div>
+            <div class="info-value" style="font-size:16px; letter-spacing:.02em;">
+                hello@skilledsociety.com
+            </div>
+            <div class="info-sub">
+                <span class="ph-note">placeholder — update with real email</span>
+            </div>
+        </div>
+
+        <div class="info-divider reveal"></div>
+
+        <div class="info-block reveal">
+            <div class="info-label">Follow</div>
+            <div class="social-links">
+                <a href="#" class="social-link">
+                    Instagram <span class="social-link-arrow">→</span>
+                    <span class="ph-note">(tbd)</span>
+                </a>
+                <a href="#" class="social-link">
+                    TikTok <span class="social-link-arrow">→</span>
+                    <span class="ph-note">(tbd)</span>
+                </a>
+            </div>
+        </div>
+
+        <div class="response-note reveal">
+            We typically respond within 1–2 business days. For drop-related questions, join the email list for the fastest updates.
+        </div>
+
+    </div>
+
+    <!-- Form Panel -->
+    <div class="contact-form-wrap">
+        <h2 class="form-title" id="formTitle">
+            SEND US A<br><em>MESSAGE.</em>
+        </h2>
+
+        <form class="contact-form" id="contactForm" onsubmit="handleSubmit(event)">
+
+            <div class="form-row">
+                <div class="field reveal">
+                    <label class="field-label">First Name</label>
+                    <input type="text" placeholder="First name" required>
+                </div>
+                <div class="field reveal">
+                    <label class="field-label">Last Name</label>
+                    <input type="text" placeholder="Last name" required>
+                </div>
+            </div>
+
+            <div class="field reveal">
+                <label class="field-label">Email</label>
+                <input type="email" placeholder="your@email.com" required>
+            </div>
+
+            <div class="field reveal">
+                <label class="field-label">Subject</label>
+                <select required>
+                    <option value="" disabled selected>Select a topic</option>
+                    <option>General Inquiry</option>
+                    <option>Drop 001 — Early Access</option>
+                    <option>Wholesale / Bulk Order</option>
+                    <option>Press &amp; Media</option>
+                    <option>Collaboration</option>
+                    <option>Other</option>
+                </select>
+            </div>
+
+            <div class="field reveal">
+                <label class="field-label">Message</label>
+                <textarea placeholder="What's on your mind..." required></textarea>
+            </div>
+
+            <div class="form-submit reveal">
+                <span class="submit-note">We'll get back to you within 1–2 business days.</span>
+                <button type="submit" class="submit-btn">SEND IT</button>
+            </div>
+
+        </form>
+
+        <!-- Success state (hidden until submit) -->
+        <div class="form-success" id="formSuccess">
+            <div class="success-icon">✓</div>
+            <div class="success-title">MESSAGE SENT.</div>
+            <p class="success-text">
+                We got it. Expect a reply within 1–2 business days.<br>
+                In the meantime, join the drop list so you don't miss Drop 001.
+            </p>
+            <a href="index.html#drop" class="nav-drop" style="margin-top:8px;">Join the Drop</a>
+        </div>
+
+    </div>
+</div>
+
+<!-- ─────────────── FAQ ─────────────── -->
+<section class="faq">
+    <h2 class="faq-title reveal">QUICK ANSWERS</h2>
+    <div class="faq-grid">
+        <div class="faq-item reveal">
+            <div class="faq-q">WHEN IS DROP 001?</div>
+            <p class="faq-a">We're in production now. Join the drop list at the top of the page and you'll be the first to know the exact date — 48 hours before anyone else.</p>
+        </div>
+        <div class="faq-item reveal">
+            <div class="faq-q">WHERE DO YOU SHIP?</div>
+            <p class="faq-a">We'll have full shipping details confirmed before Drop 001. Starting with the US, with more to come. Join the list for updates.</p>
+        </div>
+        <div class="faq-item reveal">
+            <div class="faq-q">DO YOU DO WHOLESALE?</div>
+            <p class="faq-a">We're open to conversations. Use the form above and select "Wholesale / Bulk Order" — we'll get back to you directly.</p>
+        </div>
+        <div class="faq-item reveal">
+            <div class="faq-q">ARE THE TEES MADE IN NJ?</div>
+            <p class="faq-a">Yes. Every piece is printed in-house in New Jersey. No overseas production, no shortcuts. That's the whole point.</p>
+        </div>
+        <div class="faq-item reveal">
+            <div class="faq-q">WHAT SIZES WILL YOU CARRY?</div>
+            <p class="faq-a">Drop 001 will cover a full size run. Exact sizing info and a fit guide will be published before the drop goes live.</p>
+        </div>
+        <div class="faq-item reveal">
+            <div class="faq-q">PRESS &amp; MEDIA?</div>
+            <p class="faq-a">Use the contact form above and select "Press &amp; Media." We'll connect you with the right person directly.</p>
+        </div>
+    </div>
+</section>
+
+<!-- ─────────────── FOOTER ─────────────── -->
+<footer>
+    <div class="foot-top">
+        <div class="foot-brand">
+            <div class="foot-logo">SKILLED<br><em>SOCIETY</em></div>
+            <p class="foot-desc">Premium streetwear built by hand in New Jersey. Made by those who know the value of craft.</p>
+        </div>
+        <div class="foot-cols">
+            <div class="foot-col">
+                <div class="foot-col-head">Navigate</div>
+                <a href="index.html">Home</a>
+                <a href="about.html">About</a>
+                <a href="shop.html">Shop</a>
+                <a href="index.html#drop">Join the Drop</a>
+            </div>
+            <div class="foot-col">
+                <div class="foot-col-head">Connect</div>
+                <a href="#">Instagram <span class="ph-note">(tbd)</span></a>
+                <a href="#">TikTok <span class="ph-note">(tbd)</span></a>
+                <a href="contact.html">Contact</a>
+            </div>
+        </div>
+    </div>
+    <div class="foot-bottom">
+        <span class="foot-copy">&copy; 2025 Skilled Society. All rights reserved. New Jersey, USA.</span>
+        <span class="foot-sig">NJ &nbsp;&#124;&nbsp; SS</span>
+    </div>
+</footer>
+
+<script>
+gsap.registerPlugin();
+
+// ── Cursor ─────────────────────────────────────────────────────
+const cur = document.getElementById('cur');
+const ring = document.getElementById('ring');
+let mx = 0, my = 0, rx = 0, ry = 0;
+document.addEventListener('mousemove', e => {
+    mx = e.clientX; my = e.clientY;
+    cur.style.left = mx + 'px'; cur.style.top = my + 'px';
+});
+(function tick() {
+    rx += (mx - rx) * 0.11; ry += (my - ry) * 0.11;
+    ring.style.left = rx + 'px'; ring.style.top = ry + 'px';
+    requestAnimationFrame(tick);
+})();
+
+// ── Page entrance ──────────────────────────────────────────────
+gsap.timeline({ delay: 0.15 })
+    .to('#pgEye',    { opacity: 1, duration: 0.5, ease: 'power3.out' })
+    .to('#pgTitle',  { opacity: 1, y: 0, duration: 0.8, ease: 'power3.out' }, '-=0.2')
+    .to('#pgSub',    { opacity: 1, y: 0, duration: 0.6, ease: 'power3.out' }, '-=0.4')
+    .to('#formTitle',{ opacity: 1, y: 0, duration: 0.6, ease: 'power3.out' }, '-=0.2');
+
+// ── Scroll reveals ─────────────────────────────────────────────
+gsap.utils.toArray('.reveal').forEach(el => {
+    gsap.to(el, {
+        opacity: 1, y: 0, duration: 0.7, ease: 'power3.out',
+        scrollTrigger: {
+            trigger: el, start: 'top 88%',
+            toggleActions: 'play none none none'
+        }
+    });
+});
+
+// ── Form submit ────────────────────────────────────────────────
+function handleSubmit(e) {
+    e.preventDefault();
+    const form    = document.getElementById('contactForm');
+    const success = document.getElementById('formSuccess');
+    gsap.to(form, {
+        opacity: 0, y: -20, duration: 0.4, ease: 'power2.in',
+        onComplete() {
+            form.style.display = 'none';
+            success.classList.add('show');
+            gsap.from(success, { opacity: 0, y: 20, duration: 0.5, ease: 'power3.out' });
+        }
+    });
+}
+</script>
+</body>
+</html>
