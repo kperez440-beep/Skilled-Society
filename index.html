@@ -13,11 +13,11 @@
 
     <style>
         :root {
-            --black:       #0A0A0A;
-            --white:       #F5F5F5;
-            --orange:      #FF6A00;
-            --gray:        #141414;
-            --gray-mid:    #1E1E1E;
+            --black:       #0C0C0C;
+            --white:       #F0EDE8;
+            --orange:      #D4520A;
+            --gray:        #131313;
+            --gray-mid:    #1C1C1C;
             --gray-border: #2A2A2A;
             --muted:       #666666;
             --display:     'Bebas Neue', sans-serif;
@@ -421,23 +421,33 @@
 
         /* ── Drop ─────────────────────────────────────────────── */
         .drop {
-            background: var(--orange);
+            background: #111111;
+            border-top: 1px solid var(--gray-border);
             padding: 110px 48px;
+            position: relative; overflow: hidden;
+        }
+        .drop::before {
+            content: '';
+            position: absolute; inset: 0;
+            background: radial-gradient(ellipse at 50% 100%, rgba(212,82,10,.12) 0%, transparent 65%);
+            pointer-events: none;
         }
         .drop-inner {
             max-width: 780px; margin: 0 auto; text-align: center;
+            position: relative; z-index: 1;
         }
         .drop-sub {
             font-size: 10px; font-weight: 700;
             letter-spacing: .32em; text-transform: uppercase;
-            color: rgba(0,0,0,.45); margin-bottom: 20px;
+            color: var(--orange); margin-bottom: 20px;
         }
         .drop-h2 {
             font-family: var(--display);
             font-size: clamp(56px, 9.5vw, 128px);
             line-height: .9; letter-spacing: .02em;
-            color: var(--black); margin-bottom: 52px;
+            color: var(--white); margin-bottom: 52px;
         }
+        .drop-h2 span { color: var(--orange); }
 
         .countdown {
             display: flex; justify-content: center;
@@ -445,45 +455,48 @@
         }
         .cd-unit {
             padding: 24px 36px;
-            background: rgba(0,0,0,.1); text-align: center;
-            min-width: 108px;
+            background: rgba(255,255,255,.04);
+            border: 1px solid var(--gray-border);
+            text-align: center; min-width: 108px;
         }
-        .cd-unit + .cd-unit { border-left: 1px solid rgba(0,0,0,.15); }
+        .cd-unit + .cd-unit { border-left: none; }
         .cd-num {
             display: block;
             font-family: var(--display); font-size: 60px;
-            line-height: 1; color: var(--black);
+            line-height: 1; color: var(--white);
         }
         .cd-label {
             display: block;
             font-size: 8px; font-weight: 700;
             letter-spacing: .28em; text-transform: uppercase;
-            color: rgba(0,0,0,.45); margin-top: 6px;
+            color: var(--muted); margin-top: 6px;
         }
 
         .drop-form { display: flex; max-width: 460px; margin: 0 auto; }
         .drop-input {
             flex: 1;
-            background: rgba(0,0,0,.14);
-            border: 1px solid rgba(0,0,0,.2); border-right: none;
-            color: var(--black);
+            background: rgba(255,255,255,.05);
+            border: 1px solid var(--gray-border); border-right: none;
+            color: var(--white);
             font-family: var(--body); font-size: 13px;
             padding: 16px 22px; outline: none;
+            transition: border-color .2s;
         }
-        .drop-input::placeholder { color: rgba(0,0,0,.38); }
+        .drop-input::placeholder { color: var(--muted); }
+        .drop-input:focus { border-color: var(--orange); }
         .drop-btn {
-            background: var(--black);
-            border: 1px solid var(--black);
-            color: var(--orange);
+            background: var(--orange);
+            border: 1px solid var(--orange);
+            color: var(--white);
             font-family: var(--body); font-size: 10px; font-weight: 700;
             letter-spacing: .2em; text-transform: uppercase;
             padding: 16px 28px; cursor: none;
             transition: background .2s, color .2s;
         }
-        .drop-btn:hover { background: transparent; color: var(--black); border-color: var(--black); }
+        .drop-btn:hover { background: transparent; color: var(--orange); }
         .drop-fine {
             margin-top: 16px;
-            font-size: 10px; color: rgba(0,0,0,.38); letter-spacing: .06em;
+            font-size: 10px; color: var(--muted); letter-spacing: .06em;
         }
 
         /* ── Footer ───────────────────────────────────────────── */
@@ -621,9 +634,9 @@
 
     <div class="hero-foot" id="heroFoot">
         <p class="hero-sub">
-            <strong>Built by those who build.</strong><br>
+            <strong>Dirty hands. Clean money.</strong><br>
             Streetwear made from the ground up in New Jersey.
-            Every piece designed with the same precision we put into our work.
+            Born on the job site. Built for anyone who earns what they wear.
         </p>
         <div class="hero-capture">
             <span class="capture-label">Drop 001 &mdash; Be First In Line</span>
@@ -666,27 +679,27 @@
     </div>
 
     <div class="story-quote reveal">
-        WE DIDN&rsquo;T START IN A STUDIO.<br>
-        WE STARTED ON A <span class="hi">JOB SITE.</span>
+        NO SHORTCUTS.<br>NO EXCUSES.<br>
+        JUST <span class="hi">SKILLED WORK.</span>
     </div>
 
     <div class="story-cards">
         <div class="story-card reveal">
             <div class="card-num">01</div>
             <div class="card-title">BUILT BY HAND</div>
-            <p class="card-text">Every piece is designed and printed in-house in New Jersey. No overseas shortcuts, no compromise on craft. We know what it means to take pride in your work.</p>
+            <p class="card-text">Every piece designed and printed in-house in NJ. No overseas shortcuts, no compromise. We know what it means to put your name on something and mean it.</p>
             <div class="card-accent"></div>
         </div>
         <div class="story-card reveal">
             <div class="card-num">02</div>
             <div class="card-title">MADE IN NJ</div>
-            <p class="card-text">Rooted in New Jersey. Skilled Society is built on the same blue-collar foundation that defines this state &mdash; hard work, straight talk, and zero pretense.</p>
+            <p class="card-text">Jersey built. Rooted in the same blue-collar foundation that defines this state — hard work, straight talk, zero pretense. We didn't move to the city. We built it.</p>
             <div class="card-accent"></div>
         </div>
         <div class="story-card reveal">
             <div class="card-num">03</div>
             <div class="card-title">WORN WITH PURPOSE</div>
-            <p class="card-text">This isn&rsquo;t fast fashion. These are limited pieces made for people who understand that quality takes time &mdash; and that&rsquo;s exactly what makes it worth wearing.</p>
+            <p class="card-text">This isn't fast fashion and it's not for everyone. Limited pieces for people who know the difference between something made right and something made quick.</p>
             <div class="card-accent"></div>
         </div>
     </div>
@@ -793,7 +806,7 @@
 <section class="drop" id="drop">
     <div class="drop-inner">
         <p class="drop-sub reveal-d">Drop 001 &mdash; New Jersey</p>
-        <h2 class="drop-h2 reveal-d">FIRST DROP<br>IS COMING.</h2>
+        <h2 class="drop-h2 reveal-d">DIRTY HANDS.<br><span>CLEAN MONEY.</span></h2>
 
         <div class="countdown">
             <div class="cd-unit">
