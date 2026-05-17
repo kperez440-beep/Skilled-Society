@@ -1,0 +1,602 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About — Skilled Society</title>
+    <meta name="description" content="Skilled Society was built by those who build. New Jersey streetwear rooted in the trades.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+
+    <style>
+        :root {
+            --black:       #F2EDE5;
+            --white:       #1A1816;
+            --orange:      #7A6E62;
+            --gray:        #EAE4DB;
+            --gray-mid:    #DDD7CC;
+            --gray-border: #C4BCB2;
+            --muted:       #8A837A;
+            --display:     'Bebas Neue', sans-serif;
+            --body:        'Inter', sans-serif;
+        }
+
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+
+        body {
+            background: var(--black);
+            color: var(--white);
+            font-family: var(--body);
+            overflow-x: hidden;
+            cursor: none;
+        }
+
+        /* ── Cursor ───────────────────────────────────────────── */
+        .cursor {
+            position: fixed;
+            width: 10px; height: 10px;
+            background: var(--orange);
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 9999;
+            transform: translate(-50%, -50%);
+            transition: width .15s, height .15s;
+        }
+        .cursor-ring {
+            position: fixed;
+            width: 38px; height: 38px;
+            border: 1px solid rgba(122,110,98,.4);
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 9998;
+            transform: translate(-50%, -50%);
+            transition: width .2s, height .2s, border-color .2s;
+        }
+
+        /* ── Nav ──────────────────────────────────────────────── */
+        nav {
+            position: fixed; top: 0; left: 0; right: 0;
+            z-index: 1000;
+            padding: 28px 48px;
+            display: flex; align-items: center; justify-content: space-between;
+            transition: background .3s, padding .3s, border-color .3s;
+            border-bottom: 1px solid transparent;
+        }
+        nav.scrolled {
+            background: rgba(242,237,229,.96);
+            backdrop-filter: blur(14px);
+            padding: 18px 48px;
+            border-color: var(--gray-border);
+        }
+        .nav-logo {
+            font-family: var(--display);
+            font-size: 20px; letter-spacing: .22em;
+            color: var(--white); text-decoration: none;
+        }
+        .nav-logo em { font-style: normal; color: var(--orange); }
+        .nav-links {
+            display: flex; align-items: center; gap: 36px;
+        }
+        .nav-links a {
+            font-size: 10px; font-weight: 500;
+            letter-spacing: .18em; text-transform: uppercase;
+            color: var(--muted); text-decoration: none;
+            transition: color .2s;
+        }
+        .nav-links a:hover, .nav-links a.active { color: var(--white); }
+        .nav-drop {
+            font-size: 10px; font-weight: 700;
+            letter-spacing: .18em; text-transform: uppercase;
+            color: var(--orange);
+            border: 1px solid var(--orange);
+            padding: 9px 22px;
+            text-decoration: none;
+            transition: background .2s, color .2s;
+        }
+        .nav-drop:hover { background: var(--orange); color: var(--black); }
+
+        /* ── Page Hero ────────────────────────────────────────── */
+        .page-hero {
+            padding: 160px 48px 80px;
+            border-bottom: 1px solid var(--gray-border);
+            position: relative; overflow: hidden;
+        }
+        .page-hero-grid {
+            position: absolute; inset: 0;
+            background-image:
+                linear-gradient(rgba(26,24,22,.05) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(26,24,22,.05) 1px, transparent 1px);
+            background-size: 64px 64px;
+            pointer-events: none;
+        }
+        .eyebrow {
+            display: flex; align-items: center; gap: 12px;
+            margin-bottom: 32px; opacity: 0;
+        }
+        .eyebrow-bar { width: 28px; height: 1px; background: var(--orange); }
+        .eyebrow-label {
+            font-size: 9px; font-weight: 700;
+            letter-spacing: .3em; text-transform: uppercase; color: var(--orange);
+        }
+        .page-title {
+            font-family: var(--display);
+            font-size: clamp(64px, 11vw, 160px);
+            line-height: .9; letter-spacing: .01em;
+            max-width: 900px;
+            opacity: 0; transform: translateY(40px);
+        }
+        .page-title em { font-style: normal; color: var(--orange); }
+        .page-hero-sub {
+            margin-top: 40px;
+            font-size: 15px; line-height: 1.8;
+            color: var(--muted); font-weight: 300;
+            max-width: 520px;
+            opacity: 0; transform: translateY(20px);
+        }
+        .page-hero-sub strong { color: var(--white); font-weight: 500; }
+
+        /* ── Founder ──────────────────────────────────────────── */
+        .founder {
+            padding: 120px 48px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 80px;
+            align-items: center;
+        }
+        .founder-photo {
+            aspect-ratio: 3/4;
+            background: var(--gray);
+            border: 1px solid var(--gray-border);
+            display: flex; flex-direction: column;
+            align-items: center; justify-content: center;
+            gap: 16px; position: relative;
+            overflow: hidden;
+        }
+        .founder-photo-placeholder {
+            display: flex; flex-direction: column;
+            align-items: center; gap: 12px;
+        }
+        .founder-photo-icon {
+            width: 80px; height: 80px;
+            border: 1px solid var(--gray-border);
+            border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+        }
+        .founder-photo-icon svg { width: 40px; opacity: .3; }
+        .founder-photo-label {
+            font-size: 9px; font-weight: 600;
+            letter-spacing: .22em; text-transform: uppercase;
+            color: var(--gray-border);
+        }
+        .ph-tag {
+            position: absolute; top: 12px; left: 12px;
+            font-size: 7px; font-weight: 600;
+            letter-spacing: .18em; text-transform: uppercase;
+            color: var(--gray-border);
+            border: 1px solid var(--gray-border);
+            padding: 3px 8px; background: var(--black);
+        }
+        .founder-content { display: flex; flex-direction: column; gap: 32px; }
+        .founder-name {
+            font-family: var(--display);
+            font-size: clamp(36px, 4vw, 60px);
+            letter-spacing: .04em; line-height: 1;
+        }
+        .founder-name span { color: var(--orange); }
+        .founder-role {
+            font-size: 10px; font-weight: 600;
+            letter-spacing: .25em; text-transform: uppercase;
+            color: var(--orange); margin-top: -20px;
+        }
+        .founder-bio {
+            font-size: 14px; line-height: 1.9;
+            color: var(--muted); font-weight: 300;
+            border-left: 2px solid var(--orange);
+            padding-left: 24px;
+        }
+        .founder-bio strong { color: var(--white); font-weight: 500; }
+        .founder-stats {
+            display: grid; grid-template-columns: repeat(3, 1fr);
+            gap: 1px; background: var(--gray-border);
+            border: 1px solid var(--gray-border);
+        }
+        .stat {
+            background: var(--black);
+            padding: 24px 20px;
+        }
+        .stat-num {
+            font-family: var(--display);
+            font-size: 40px; line-height: 1;
+            color: var(--white); margin-bottom: 6px;
+        }
+        .stat-label {
+            font-size: 9px; font-weight: 600;
+            letter-spacing: .2em; text-transform: uppercase;
+            color: var(--muted);
+        }
+
+        /* ── Origin Story ─────────────────────────────────────── */
+        .origin {
+            background: var(--gray);
+            border-top: 1px solid var(--gray-border);
+            border-bottom: 1px solid var(--gray-border);
+            padding: 120px 48px;
+        }
+        .origin-inner {
+            max-width: 800px;
+        }
+        .section-label {
+            font-size: 9px; font-weight: 700;
+            letter-spacing: .3em; text-transform: uppercase;
+            color: var(--orange); margin-bottom: 48px;
+            display: flex; align-items: center; gap: 12px;
+        }
+        .section-label::before {
+            content: ''; width: 28px; height: 1px;
+            background: var(--orange); flex-shrink: 0;
+        }
+        .origin-quote {
+            font-family: var(--display);
+            font-size: clamp(36px, 5vw, 72px);
+            line-height: 1; letter-spacing: .02em;
+            margin-bottom: 48px;
+        }
+        .origin-quote em { font-style: normal; color: var(--orange); }
+        .origin-body {
+            display: flex; flex-direction: column; gap: 20px;
+        }
+        .origin-body p {
+            font-size: 15px; line-height: 1.85;
+            color: var(--muted); font-weight: 300;
+        }
+        .origin-body p strong { color: var(--white); font-weight: 500; }
+
+        /* ── Values ───────────────────────────────────────────── */
+        .values { padding: 120px 48px; }
+        .values-title {
+            font-family: var(--display);
+            font-size: clamp(40px, 5vw, 72px);
+            line-height: 1; letter-spacing: .02em;
+            margin-bottom: 64px;
+        }
+        .values-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1px; background: var(--gray-border);
+            border: 1px solid var(--gray-border);
+        }
+        .value-card {
+            background: var(--black);
+            padding: 52px 44px;
+            transition: background .3s;
+        }
+        .value-card:hover { background: var(--gray); }
+        .value-num {
+            font-family: var(--display); font-size: 52px;
+            color: var(--gray-border); line-height: 1;
+            margin-bottom: 24px;
+        }
+        .value-title {
+            font-family: var(--display); font-size: 28px;
+            letter-spacing: .05em; color: var(--white);
+            margin-bottom: 16px;
+        }
+        .value-text {
+            font-size: 13px; line-height: 1.85;
+            color: var(--muted); font-weight: 300;
+        }
+        .value-accent {
+            width: 28px; height: 2px;
+            background: var(--orange); margin-top: 28px;
+            transition: width .3s;
+        }
+        .value-card:hover .value-accent { width: 52px; }
+
+        /* ── CTA Strip ────────────────────────────────────────── */
+        .cta-strip {
+            background: #111111;
+            padding: 80px 48px;
+            display: flex; align-items: center;
+            justify-content: space-between; flex-wrap: wrap; gap: 32px;
+        }
+        .cta-strip-text {
+            font-family: var(--display);
+            font-size: clamp(32px, 4vw, 56px);
+            line-height: 1; letter-spacing: .02em;
+            color: #EDE8E0;
+        }
+        .cta-strip-text em { font-style: normal; color: #C8B89A; }
+        .cta-strip-btn {
+            font-size: 10px; font-weight: 700;
+            letter-spacing: .2em; text-transform: uppercase;
+            color: #1A1816;
+            background: #9A8E82;
+            border: 1px solid #9A8E82;
+            padding: 16px 36px; text-decoration: none;
+            transition: background .2s, color .2s;
+            cursor: none;
+        }
+        .cta-strip-btn:hover { background: transparent; color: #9A8E82; }
+
+        /* ── Footer ───────────────────────────────────────────── */
+        footer {
+            background: var(--black);
+            border-top: 1px solid var(--gray-border);
+            padding: 72px 48px 48px;
+        }
+        .foot-top {
+            display: flex; align-items: flex-start;
+            justify-content: space-between; flex-wrap: wrap;
+            gap: 40px; margin-bottom: 64px;
+        }
+        .foot-brand { max-width: 300px; }
+        .foot-logo {
+            font-family: var(--display);
+            font-size: 38px; letter-spacing: .1em;
+            line-height: 1; margin-bottom: 18px;
+        }
+        .foot-logo em { font-style: normal; color: var(--orange); }
+        .foot-desc {
+            font-size: 12px; color: var(--muted);
+            line-height: 1.8; letter-spacing: .03em;
+        }
+        .foot-cols { display: flex; gap: 64px; flex-wrap: wrap; }
+        .foot-col-head {
+            font-size: 9px; font-weight: 700;
+            letter-spacing: .28em; text-transform: uppercase;
+            color: var(--orange); margin-bottom: 20px;
+        }
+        .foot-col a {
+            display: block; font-size: 12px;
+            color: var(--muted); text-decoration: none;
+            margin-bottom: 12px; letter-spacing: .04em;
+            transition: color .2s;
+        }
+        .foot-col a:hover { color: var(--white); }
+        .ph-note { font-size: 9px; color: var(--gray-border); font-style: italic; }
+        .foot-bottom {
+            border-top: 1px solid var(--gray-border);
+            padding-top: 32px;
+            display: flex; align-items: center;
+            justify-content: space-between; flex-wrap: wrap; gap: 16px;
+        }
+        .foot-copy { font-size: 10px; color: var(--muted); letter-spacing: .1em; }
+        .foot-sig { font-family: var(--display); font-size: 13px; letter-spacing: .32em; color: var(--gray-border); }
+
+        /* ── Reveal ───────────────────────────────────────────── */
+        .reveal { opacity: 0; transform: translateY(28px); }
+
+        /* ── Responsive ───────────────────────────────────────── */
+        @media (max-width: 900px) {
+            .founder { grid-template-columns: 1fr; gap: 48px; }
+            .values-grid { grid-template-columns: 1fr; }
+        }
+        @media (max-width: 768px) {
+            nav { padding: 20px 24px; }
+            nav.scrolled { padding: 14px 24px; }
+            .nav-links a:not(.nav-drop) { display: none; }
+            .page-hero { padding: 120px 24px 60px; }
+            .founder { padding: 80px 24px; }
+            .origin { padding: 80px 24px; }
+            .values { padding: 80px 24px; }
+            .cta-strip { padding: 60px 24px; }
+            footer { padding: 60px 24px 40px; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- Cursor -->
+<div class="cursor"  id="cur"></div>
+<div class="cursor-ring" id="ring"></div>
+
+<!-- Nav -->
+<nav id="nav">
+    <a href="index.html" class="nav-logo">SKILLED <em>SOCIETY</em></a>
+    <div class="nav-links">
+        <a href="about.html" class="active">About</a>
+        <a href="shop.html">Shop</a>
+        <a href="index.html#drop">The Drop</a>
+        <a href="index.html#drop" class="nav-drop">Join the Drop</a>
+    </div>
+</nav>
+
+<!-- ─────────────── PAGE HERO ─────────────── -->
+<section class="page-hero">
+    <div class="page-hero-grid"></div>
+    <div class="eyebrow" id="pgEye">
+        <div class="eyebrow-bar"></div>
+        <span class="eyebrow-label">Our Story</span>
+    </div>
+    <h1 class="page-title" id="pgTitle">
+        BUILT BY<br>THOSE WHO <em>BUILD.</em>
+    </h1>
+    <p class="page-hero-sub" id="pgSub">
+        <strong>Skilled Society isn't a fashion project.</strong> It's what happens when the people who build things for a living decide to build something for themselves.
+    </p>
+</section>
+
+<!-- ─────────────── FOUNDER ─────────────── -->
+<section class="founder">
+    <div class="founder-photo reveal">
+        <span class="ph-tag">founder photo — placeholder</span>
+        <div class="founder-photo-placeholder">
+            <div class="founder-photo-icon">
+                <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <circle cx="50" cy="35" r="18" stroke="currentColor" stroke-width="2"/>
+                    <path d="M15 85 C15 65 85 65 85 85" stroke="currentColor" stroke-width="2" fill="none"/>
+                </svg>
+            </div>
+            <span class="founder-photo-label">Founder portrait</span>
+        </div>
+    </div>
+
+    <div class="founder-content">
+        <div class="reveal">
+            <div class="founder-name">CLAUDIA<br><span>— FOUNDER</span></div>
+            <div class="founder-role">Owner, Skilled Society &amp; UBL Roofing</div>
+        </div>
+
+        <div class="founder-bio reveal">
+            <p>
+                <strong>Claudia built her name in the trades.</strong> As the owner of a roofing company based in New Jersey, she's spent years in an industry that demands precision, accountability, and a relentless work ethic. The same values that make a great contractor make a great brand.
+            </p>
+            <br>
+            <p>
+                Skilled Society was born from a simple idea: <strong>the people who do the real work deserve real gear.</strong> Not fast fashion, not logo-heavy hype — something built with the same care that goes into every job site.
+            </p>
+        </div>
+
+        <div class="founder-stats reveal">
+            <div class="stat">
+                <div class="stat-num">NJ</div>
+                <div class="stat-label">Rooted Here</div>
+            </div>
+            <div class="stat">
+                <div class="stat-num">001</div>
+                <div class="stat-label">First Drop</div>
+            </div>
+            <div class="stat">
+                <div class="stat-num">100%</div>
+                <div class="stat-label">In-House Made</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ─────────────── ORIGIN ─────────────── -->
+<section class="origin">
+    <div class="origin-inner">
+        <div class="section-label">The Origin</div>
+        <div class="origin-quote reveal">
+            FROM THE<br>JOB SITE<br>TO THE <em>STREETS.</em>
+        </div>
+        <div class="origin-body reveal">
+            <p>
+                <strong>It started on a roof.</strong> Running a roofing company in New Jersey means early mornings, hard decisions, and zero room for shortcuts. It also means building something that lasts — and taking pride in the work even when nobody's watching.
+            </p>
+            <p>
+                That same mindset is what Skilled Society is built on. Every design, every piece, every stitch goes through the same standard: <strong>would we put our name on it?</strong> If the answer isn't yes, it doesn't ship.
+            </p>
+            <p>
+                We're not chasing trends. We're not trying to be Supreme or Palace. We're New Jersey. We work for what we have. And now we wear it.
+            </p>
+        </div>
+    </div>
+</section>
+
+<!-- ─────────────── VALUES ─────────────── -->
+<section class="values">
+    <div class="eyebrow reveal">
+        <div class="eyebrow-bar"></div>
+        <span class="eyebrow-label">What We Stand For</span>
+    </div>
+    <div class="values-grid">
+        <div class="value-card reveal">
+            <div class="value-num">01</div>
+            <div class="value-title">NO SHORTCUTS</div>
+            <p class="value-text">Every piece is printed in-house in New Jersey. We don't outsource the craft. We don't cut corners on materials. If it's got our name on it, it earned it.</p>
+            <div class="value-accent"></div>
+        </div>
+        <div class="value-card reveal">
+            <div class="value-num">02</div>
+            <div class="value-title">MADE HERE</div>
+            <p class="value-text">Jersey isn't just our zip code — it's our identity. Blue-collar, no-nonsense, and real. We didn't move to be cool. We stayed to build something worth wearing.</p>
+            <div class="value-accent"></div>
+        </div>
+        <div class="value-card reveal">
+            <div class="value-num">03</div>
+            <div class="value-title">EARNED NOT GIVEN</div>
+            <p class="value-text">We make limited drops, not unlimited supply. The people who get it early put in the effort. That's intentional. Scarcity is how we keep it worth something.</p>
+            <div class="value-accent"></div>
+        </div>
+        <div class="value-card reveal">
+            <div class="value-num">04</div>
+            <div class="value-title">COMMUNITY FIRST</div>
+            <p class="value-text">The society part is real. This is for the people who grind — trades, construction, service workers, small business owners. The people who make places like New Jersey run.</p>
+            <div class="value-accent"></div>
+        </div>
+    </div>
+</section>
+
+<!-- ─────────────── CTA ─────────────── -->
+<div class="cta-strip reveal">
+    <div class="cta-strip-text">
+        READY TO<br>JOIN THE <em>SOCIETY?</em>
+    </div>
+    <a href="index.html#drop" class="cta-strip-btn">Join the Drop</a>
+</div>
+
+<!-- ─────────────── FOOTER ─────────────── -->
+<footer>
+    <div class="foot-top">
+        <div class="foot-brand">
+            <div class="foot-logo">SKILLED<br><em>SOCIETY</em></div>
+            <p class="foot-desc">Premium streetwear built by hand in New Jersey. Made by those who know the value of craft.</p>
+        </div>
+        <div class="foot-cols">
+            <div class="foot-col">
+                <div class="foot-col-head">Navigate</div>
+                <a href="index.html">Home</a>
+                <a href="about.html">About</a>
+                <a href="shop.html">Shop</a>
+                <a href="index.html#drop">Join the Drop</a>
+            </div>
+            <div class="foot-col">
+                <div class="foot-col-head">Connect</div>
+                <a href="#">Instagram <span class="ph-note">(tbd)</span></a>
+                <a href="#">TikTok <span class="ph-note">(tbd)</span></a>
+                <a href="contact.html">Contact</a>
+            </div>
+        </div>
+    </div>
+    <div class="foot-bottom">
+        <span class="foot-copy">&copy; 2025 Skilled Society. All rights reserved. New Jersey, USA.</span>
+        <span class="foot-sig">NJ &nbsp;&#124;&nbsp; SS</span>
+    </div>
+</footer>
+
+<script>
+gsap.registerPlugin(ScrollTrigger);
+
+// ── Cursor ─────────────────────────────────────────────────────
+const cur = document.getElementById('cur');
+const ring = document.getElementById('ring');
+let mx = 0, my = 0, rx = 0, ry = 0;
+document.addEventListener('mousemove', e => {
+    mx = e.clientX; my = e.clientY;
+    cur.style.left = mx + 'px'; cur.style.top = my + 'px';
+});
+(function tick() {
+    rx += (mx - rx) * 0.11; ry += (my - ry) * 0.11;
+    ring.style.left = rx + 'px'; ring.style.top = ry + 'px';
+    requestAnimationFrame(tick);
+})();
+
+// ── Nav scroll ─────────────────────────────────────────────────
+const nav = document.getElementById('nav');
+window.addEventListener('scroll', () => {
+    nav.classList.toggle('scrolled', window.scrollY > 60);
+}, { passive: true });
+
+// ── Page hero entrance ─────────────────────────────────────────
+const heroTl = gsap.timeline({ delay: 0.2 });
+heroTl
+    .to('#pgEye',   { opacity: 1, duration: 0.5, ease: 'power3.out' })
+    .to('#pgTitle', { opacity: 1, y: 0, duration: 0.8, ease: 'power3.out' }, '-=0.2')
+    .to('#pgSub',   { opacity: 1, y: 0, duration: 0.6, ease: 'power3.out' }, '-=0.4');
+
+// ── Scroll reveals ─────────────────────────────────────────────
+gsap.utils.toArray('.reveal').forEach(el => {
+    gsap.to(el, {
+        opacity: 1, y: 0, duration: 0.75, ease: 'power3.out',
+        scrollTrigger: { trigger: el, start: 'top 87%', toggleActions: 'play none none none' }
+    });
+});
+</script>
+</body>
+</html>
