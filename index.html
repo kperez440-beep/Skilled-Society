@@ -1,0 +1,985 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Skilled Society — New Jersey</title>
+    <meta name="description" content="Skilled Society — Premium streetwear built by hand in New Jersey. Join Drop 001.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+
+    <style>
+        :root {
+            --black:       #0A0A0A;
+            --white:       #F5F5F5;
+            --orange:      #FF6A00;
+            --gray:        #141414;
+            --gray-mid:    #1E1E1E;
+            --gray-border: #2A2A2A;
+            --muted:       #666666;
+            --display:     'Bebas Neue', sans-serif;
+            --body:        'Inter', sans-serif;
+        }
+
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+
+        body {
+            background: var(--black);
+            color: var(--white);
+            font-family: var(--body);
+            overflow-x: hidden;
+            cursor: none;
+        }
+
+        /* ── Cursor ───────────────────────────────────────────── */
+        .cursor {
+            position: fixed;
+            width: 10px; height: 10px;
+            background: var(--orange);
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 9999;
+            transform: translate(-50%, -50%);
+            transition: width .15s, height .15s;
+        }
+        .cursor-ring {
+            position: fixed;
+            width: 38px; height: 38px;
+            border: 1px solid rgba(255,106,0,.35);
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 9998;
+            transform: translate(-50%, -50%);
+            transition: width .2s, height .2s, border-color .2s;
+        }
+        body:has(a:hover) .cursor,
+        body:has(button:hover) .cursor { width: 6px; height: 6px; }
+        body:has(a:hover) .cursor-ring,
+        body:has(button:hover) .cursor-ring { width: 54px; height: 54px; border-color: var(--orange); }
+
+        /* ── Loader ───────────────────────────────────────────── */
+        .loader {
+            position: fixed; inset: 0;
+            background: var(--black);
+            display: flex; flex-direction: column;
+            align-items: center; justify-content: center; gap: 20px;
+            z-index: 10000;
+        }
+        .loader-brand {
+            font-family: var(--display);
+            font-size: clamp(28px, 5vw, 60px);
+            letter-spacing: .18em;
+            overflow: hidden;
+        }
+        .loader-brand span { display: inline-block; transform: translateY(110%); }
+        .loader-track {
+            width: 100px; height: 2px;
+            background: var(--gray-border); overflow: hidden;
+        }
+        .loader-fill {
+            height: 100%;
+            background: var(--orange);
+            width: 0;
+        }
+
+        /* ── Nav ──────────────────────────────────────────────── */
+        nav {
+            position: fixed; top: 0; left: 0; right: 0;
+            z-index: 1000;
+            padding: 28px 48px;
+            display: flex; align-items: center; justify-content: space-between;
+            transition: background .3s, padding .3s, border-color .3s;
+            border-bottom: 1px solid transparent;
+        }
+        nav.scrolled {
+            background: rgba(10,10,10,.94);
+            backdrop-filter: blur(14px);
+            padding: 18px 48px;
+            border-color: var(--gray-border);
+        }
+        .nav-logo {
+            font-family: var(--display);
+            font-size: 20px; letter-spacing: .22em;
+            color: var(--white); text-decoration: none;
+        }
+        .nav-logo em { font-style: normal; color: var(--orange); }
+        .nav-links {
+            display: flex; align-items: center; gap: 36px;
+        }
+        .nav-links a {
+            font-size: 10px; font-weight: 500;
+            letter-spacing: .18em; text-transform: uppercase;
+            color: var(--muted); text-decoration: none;
+            transition: color .2s;
+        }
+        .nav-links a:hover { color: var(--white); }
+        .nav-drop {
+            font-size: 10px; font-weight: 700;
+            letter-spacing: .18em; text-transform: uppercase;
+            color: var(--orange);
+            border: 1px solid var(--orange);
+            padding: 9px 22px;
+            text-decoration: none;
+            transition: background .2s, color .2s;
+        }
+        .nav-drop:hover { background: var(--orange); color: var(--black); }
+
+        /* ── Hero ─────────────────────────────────────────────── */
+        .hero {
+            min-height: 100vh;
+            display: flex; flex-direction: column; justify-content: center;
+            padding: 140px 48px 100px;
+            position: relative; overflow: hidden;
+        }
+        .hero-grid {
+            position: absolute; inset: 0;
+            background-image:
+                linear-gradient(rgba(255,106,0,.025) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255,106,0,.025) 1px, transparent 1px);
+            background-size: 64px 64px;
+            pointer-events: none;
+        }
+        .hero-glow {
+            position: absolute; inset: 0;
+            background: radial-gradient(ellipse at 65% 50%, rgba(255,106,0,.07) 0%, transparent 55%);
+            pointer-events: none;
+        }
+        /* corner badge */
+        .hero-badge {
+            position: absolute; top: 48px; right: 48px;
+            display: flex; flex-direction: column; align-items: flex-end;
+            opacity: 0;
+        }
+        .hero-badge-ring {
+            width: 80px; height: 80px;
+            border: 1px solid var(--gray-border);
+            border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+        }
+        .hero-badge-ring span {
+            font-family: var(--display);
+            font-size: 11px; letter-spacing: .2em;
+            color: var(--muted); text-align: center; line-height: 1.3;
+        }
+
+        .hero-eyebrow {
+            display: flex; align-items: center; gap: 14px;
+            margin-bottom: 28px; opacity: 0;
+        }
+        .hero-eyebrow-bar { width: 36px; height: 1px; background: var(--orange); }
+        .hero-eyebrow-text {
+            font-size: 10px; font-weight: 500; letter-spacing: .32em;
+            text-transform: uppercase; color: var(--orange);
+        }
+
+        .hero-h1 {
+            font-family: var(--display);
+            font-size: clamp(76px, 14.5vw, 210px);
+            line-height: .88;
+            letter-spacing: -.01em;
+        }
+        .hero-h1-line { display: block; overflow: hidden; }
+        .hero-h1-line span { display: block; transform: translateY(115%); }
+        .hero-h1-line.accent span { color: var(--orange); }
+
+        .hero-rule {
+            width: 100%; max-width: 520px; height: 1px;
+            background: var(--gray-border);
+            margin: 44px 0;
+            opacity: 0; transform: scaleX(0); transform-origin: left;
+        }
+
+        .hero-foot {
+            display: flex; align-items: flex-start;
+            justify-content: space-between; flex-wrap: wrap; gap: 48px;
+            opacity: 0;
+        }
+        .hero-sub {
+            max-width: 340px;
+            font-size: 14px; line-height: 1.75;
+            color: var(--muted); font-weight: 300;
+        }
+        .hero-sub strong { color: var(--white); font-weight: 500; }
+
+        .hero-capture { max-width: 400px; width: 100%; }
+        .capture-label {
+            display: block;
+            font-size: 9px; font-weight: 700;
+            letter-spacing: .28em; text-transform: uppercase;
+            color: var(--orange); margin-bottom: 12px;
+        }
+        .capture-row { display: flex; }
+        .capture-input {
+            flex: 1;
+            background: var(--gray);
+            border: 1px solid var(--gray-border);
+            border-right: none;
+            color: var(--white);
+            font-family: var(--body); font-size: 13px;
+            padding: 15px 20px; outline: none;
+            transition: border-color .2s;
+        }
+        .capture-input::placeholder { color: var(--muted); }
+        .capture-input:focus { border-color: var(--orange); }
+        .capture-btn {
+            background: var(--orange);
+            border: 1px solid var(--orange);
+            color: var(--black);
+            font-family: var(--body); font-size: 10px; font-weight: 700;
+            letter-spacing: .18em; text-transform: uppercase;
+            padding: 15px 26px;
+            cursor: none; transition: background .2s, color .2s;
+            white-space: nowrap;
+        }
+        .capture-btn:hover { background: transparent; color: var(--orange); }
+
+        .hero-scroll {
+            position: absolute; bottom: 40px; left: 50%;
+            transform: translateX(-50%);
+            display: flex; flex-direction: column; align-items: center; gap: 10px;
+            opacity: 0;
+        }
+        .hero-scroll-txt {
+            font-size: 8px; letter-spacing: .32em;
+            text-transform: uppercase; color: var(--muted);
+        }
+        .hero-scroll-stem {
+            width: 1px; height: 44px;
+            background: var(--gray-border);
+            position: relative; overflow: hidden;
+        }
+        .hero-scroll-stem::after {
+            content: ''; position: absolute;
+            top: -100%; left: 0;
+            width: 100%; height: 100%;
+            background: var(--orange);
+            animation: stemDrop 1.6s ease infinite;
+        }
+        @keyframes stemDrop { to { top: 100%; } }
+
+        /* ── Marquee ──────────────────────────────────────────── */
+        .marquee {
+            background: var(--gray);
+            border-top: 1px solid var(--gray-border);
+            border-bottom: 1px solid var(--gray-border);
+            padding: 18px 0; overflow: hidden;
+        }
+        .marquee-track {
+            display: flex; gap: 0;
+            white-space: nowrap;
+            animation: marqueeRoll 22s linear infinite;
+        }
+        .marquee-track.rev { animation-direction: reverse; }
+        .marquee-item {
+            display: flex; align-items: center; gap: 28px;
+            padding: 0 28px; flex-shrink: 0;
+        }
+        .marquee-word {
+            font-family: var(--display);
+            font-size: 17px; letter-spacing: .16em;
+            text-transform: uppercase; color: var(--muted);
+        }
+        .marquee-dot {
+            width: 5px; height: 5px;
+            background: var(--orange); border-radius: 50%; flex-shrink: 0;
+        }
+        @keyframes marqueeRoll {
+            from { transform: translateX(0); }
+            to   { transform: translateX(-50%); }
+        }
+
+        /* ── Story ────────────────────────────────────────────── */
+        .story {
+            background: var(--gray);
+            border-top: 1px solid var(--gray-border);
+            border-bottom: 1px solid var(--gray-border);
+            padding: 120px 48px;
+        }
+        .eyebrow {
+            display: flex; align-items: center; gap: 12px;
+            margin-bottom: 52px;
+        }
+        .eyebrow-bar { width: 28px; height: 1px; background: var(--orange); }
+        .eyebrow-label {
+            font-size: 9px; font-weight: 700;
+            letter-spacing: .3em; text-transform: uppercase; color: var(--orange);
+        }
+        .eyebrow-num {
+            margin-left: auto;
+            font-family: var(--display); font-size: 12px;
+            letter-spacing: .2em; color: var(--gray-border);
+        }
+
+        .story-quote {
+            font-family: var(--display);
+            font-size: clamp(38px, 5.5vw, 84px);
+            line-height: 1.0; letter-spacing: .02em;
+            max-width: 880px; margin-bottom: 80px;
+        }
+        .story-quote .hi { color: var(--orange); }
+
+        .story-cards {
+            display: grid; grid-template-columns: repeat(3, 1fr);
+            gap: 1px; background: var(--gray-border);
+            border: 1px solid var(--gray-border);
+        }
+        .story-card {
+            background: var(--gray);
+            padding: 52px 44px;
+        }
+        .card-num {
+            font-family: var(--display); font-size: 60px;
+            color: var(--gray-border); line-height: 1;
+            margin-bottom: 28px;
+        }
+        .card-title {
+            font-family: var(--display); font-size: 26px;
+            letter-spacing: .06em; color: var(--white);
+            margin-bottom: 18px;
+        }
+        .card-text {
+            font-size: 13px; line-height: 1.85;
+            color: var(--muted); font-weight: 300;
+        }
+        .card-accent {
+            width: 28px; height: 2px;
+            background: var(--orange); margin-top: 28px;
+        }
+
+        /* ── Teaser ───────────────────────────────────────────── */
+        .teaser { padding: 120px 48px; }
+        .teaser-head {
+            display: flex; align-items: flex-end;
+            justify-content: space-between;
+            flex-wrap: wrap; gap: 24px;
+            margin-bottom: 60px;
+        }
+        .teaser-title {
+            font-family: var(--display);
+            font-size: clamp(40px, 6vw, 82px);
+            line-height: 1; letter-spacing: .02em;
+        }
+        .teaser-aside {
+            font-size: 13px; color: var(--muted);
+            max-width: 260px; line-height: 1.75;
+        }
+        .teaser-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 2px;
+        }
+        .t-card {
+            position: relative; aspect-ratio: 3/4;
+            background: var(--gray);
+            border: 1px solid var(--gray-border);
+            overflow: hidden; cursor: none;
+        }
+        .t-card-blur {
+            position: absolute; inset: 0;
+            display: flex; align-items: center; justify-content: center;
+            filter: blur(5px);
+            transition: filter .4s;
+        }
+        .t-card:hover .t-card-blur { filter: blur(2px); }
+        .t-card-icon {
+            width: 56%; aspect-ratio: 1;
+            background: var(--gray-mid);
+            border: 1px solid var(--gray-border);
+            display: flex; align-items: center; justify-content: center;
+        }
+        .t-card-icon svg { width: 42%; opacity: .18; }
+        .t-card-overlay {
+            position: absolute; inset: 0;
+            background: linear-gradient(to top, rgba(10,10,10,.85) 0%, transparent 60%);
+            display: flex; flex-direction: column;
+            align-items: center; justify-content: flex-end;
+            padding: 22px; gap: 7px;
+        }
+        .t-badge {
+            background: var(--orange);
+            color: var(--black);
+            font-size: 8px; font-weight: 700;
+            letter-spacing: .22em; text-transform: uppercase;
+            padding: 4px 12px;
+        }
+        .t-label {
+            font-family: var(--display); font-size: 19px;
+            letter-spacing: .1em; color: var(--white);
+        }
+        .t-status {
+            font-size: 9px; letter-spacing: .2em;
+            text-transform: uppercase; color: var(--muted);
+        }
+        .teaser-note {
+            margin-top: 44px; text-align: center;
+            font-size: 12px; color: var(--muted); letter-spacing: .05em;
+        }
+
+        /* ── Drop ─────────────────────────────────────────────── */
+        .drop {
+            background: var(--orange);
+            padding: 110px 48px;
+        }
+        .drop-inner {
+            max-width: 780px; margin: 0 auto; text-align: center;
+        }
+        .drop-sub {
+            font-size: 10px; font-weight: 700;
+            letter-spacing: .32em; text-transform: uppercase;
+            color: rgba(0,0,0,.45); margin-bottom: 20px;
+        }
+        .drop-h2 {
+            font-family: var(--display);
+            font-size: clamp(56px, 9.5vw, 128px);
+            line-height: .9; letter-spacing: .02em;
+            color: var(--black); margin-bottom: 52px;
+        }
+
+        .countdown {
+            display: flex; justify-content: center;
+            gap: 0; margin-bottom: 52px;
+        }
+        .cd-unit {
+            padding: 24px 36px;
+            background: rgba(0,0,0,.1); text-align: center;
+            min-width: 108px;
+        }
+        .cd-unit + .cd-unit { border-left: 1px solid rgba(0,0,0,.15); }
+        .cd-num {
+            display: block;
+            font-family: var(--display); font-size: 60px;
+            line-height: 1; color: var(--black);
+        }
+        .cd-label {
+            display: block;
+            font-size: 8px; font-weight: 700;
+            letter-spacing: .28em; text-transform: uppercase;
+            color: rgba(0,0,0,.45); margin-top: 6px;
+        }
+
+        .drop-form { display: flex; max-width: 460px; margin: 0 auto; }
+        .drop-input {
+            flex: 1;
+            background: rgba(0,0,0,.14);
+            border: 1px solid rgba(0,0,0,.2); border-right: none;
+            color: var(--black);
+            font-family: var(--body); font-size: 13px;
+            padding: 16px 22px; outline: none;
+        }
+        .drop-input::placeholder { color: rgba(0,0,0,.38); }
+        .drop-btn {
+            background: var(--black);
+            border: 1px solid var(--black);
+            color: var(--orange);
+            font-family: var(--body); font-size: 10px; font-weight: 700;
+            letter-spacing: .2em; text-transform: uppercase;
+            padding: 16px 28px; cursor: none;
+            transition: background .2s, color .2s;
+        }
+        .drop-btn:hover { background: transparent; color: var(--black); border-color: var(--black); }
+        .drop-fine {
+            margin-top: 16px;
+            font-size: 10px; color: rgba(0,0,0,.38); letter-spacing: .06em;
+        }
+
+        /* ── Footer ───────────────────────────────────────────── */
+        footer {
+            background: var(--black);
+            border-top: 1px solid var(--gray-border);
+            padding: 72px 48px 48px;
+        }
+        .foot-top {
+            display: flex; align-items: flex-start;
+            justify-content: space-between; flex-wrap: wrap;
+            gap: 40px; margin-bottom: 64px;
+        }
+        .foot-brand { max-width: 300px; }
+        .foot-logo {
+            font-family: var(--display);
+            font-size: 38px; letter-spacing: .1em;
+            line-height: 1; margin-bottom: 18px;
+        }
+        .foot-logo em { font-style: normal; color: var(--orange); }
+        .foot-desc {
+            font-size: 12px; color: var(--muted);
+            line-height: 1.8; letter-spacing: .03em;
+        }
+        .foot-cols { display: flex; gap: 64px; flex-wrap: wrap; }
+        .foot-col-head {
+            font-size: 9px; font-weight: 700;
+            letter-spacing: .28em; text-transform: uppercase;
+            color: var(--orange); margin-bottom: 20px;
+        }
+        .foot-col a {
+            display: block; font-size: 12px;
+            color: var(--muted); text-decoration: none;
+            margin-bottom: 12px; letter-spacing: .04em;
+            transition: color .2s;
+        }
+        .foot-col a:hover { color: var(--white); }
+        .foot-bottom {
+            border-top: 1px solid var(--gray-border);
+            padding-top: 32px;
+            display: flex; align-items: center;
+            justify-content: space-between; flex-wrap: wrap; gap: 16px;
+        }
+        .foot-copy {
+            font-size: 10px; color: var(--muted); letter-spacing: .1em;
+        }
+        .foot-sig {
+            font-family: var(--display);
+            font-size: 13px; letter-spacing: .32em;
+            color: var(--gray-border);
+        }
+
+        /* ── Scroll reveal base ───────────────────────────────── */
+        .reveal { opacity: 0; transform: translateY(28px); }
+
+        /* ── Responsive ───────────────────────────────────────── */
+        @media (max-width: 900px) {
+            .story-cards { grid-template-columns: 1fr; }
+            .teaser-grid { grid-template-columns: repeat(2, 1fr); }
+        }
+        @media (max-width: 768px) {
+            nav { padding: 20px 24px; }
+            nav.scrolled { padding: 14px 24px; }
+            .nav-links a:not(.nav-drop) { display: none; }
+            .hero { padding: 110px 24px 90px; }
+            .hero-badge { display: none; }
+            .hero-foot { flex-direction: column; }
+            .story { padding: 80px 24px; }
+            .teaser { padding: 80px 24px; }
+            .drop { padding: 80px 24px; }
+            footer { padding: 60px 24px 40px; }
+            .foot-top { flex-direction: column; }
+            .countdown { gap: 0; }
+            .cd-unit { padding: 18px 20px; min-width: 76px; }
+            .cd-num { font-size: 44px; }
+        }
+        @media (max-width: 480px) {
+            .drop-form { flex-direction: column; }
+            .drop-input { border-right: 1px solid rgba(0,0,0,.2); border-bottom: none; }
+            .capture-row { flex-direction: column; }
+            .capture-input { border-right: 1px solid var(--gray-border); border-bottom: none; }
+            .teaser-grid { grid-template-columns: repeat(2, 1fr); }
+        }
+    </style>
+</head>
+<body>
+
+<!-- Cursor -->
+<div class="cursor"  id="cur"></div>
+<div class="cursor-ring" id="ring"></div>
+
+<!-- Loader -->
+<div class="loader" id="loader">
+    <div class="loader-brand">
+        <span id="lw1">SKILLED</span>&thinsp;<span id="lw2">SOCIETY</span>
+    </div>
+    <div class="loader-track">
+        <div class="loader-fill" id="lFill"></div>
+    </div>
+</div>
+
+<!-- Nav -->
+<nav id="nav">
+    <a href="#" class="nav-logo">SKILLED <em>SOCIETY</em></a>
+    <div class="nav-links">
+        <a href="#story">About</a>
+        <a href="#teaser">Designs</a>
+        <a href="#drop">The Drop</a>
+        <a href="#drop" class="nav-drop">Join the Drop</a>
+    </div>
+</nav>
+
+<!-- ─────────────── HERO ─────────────── -->
+<section class="hero" id="home">
+    <div class="hero-grid"></div>
+    <div class="hero-glow"></div>
+
+    <div class="hero-badge" id="heroBadge">
+        <div class="hero-badge-ring">
+            <span>NJ<br>EST<br>2025</span>
+        </div>
+    </div>
+
+    <div class="hero-eyebrow" id="heroEye">
+        <div class="hero-eyebrow-bar"></div>
+        <span class="hero-eyebrow-text">New Jersey &mdash; Drop 001 Coming Soon</span>
+    </div>
+
+    <h1 class="hero-h1">
+        <div class="hero-h1-line"><span id="h1a">SKILLED</span></div>
+        <div class="hero-h1-line accent"><span id="h1b">SOCIETY</span></div>
+    </h1>
+
+    <div class="hero-rule" id="heroRule"></div>
+
+    <div class="hero-foot" id="heroFoot">
+        <p class="hero-sub">
+            <strong>Built by those who build.</strong><br>
+            Streetwear made from the ground up in New Jersey.
+            Every piece designed with the same precision we put into our work.
+        </p>
+        <div class="hero-capture">
+            <span class="capture-label">Drop 001 &mdash; Be First In Line</span>
+            <div class="capture-row">
+                <input type="email" class="capture-input" placeholder="your@email.com" id="heroEmail">
+                <button class="capture-btn" onclick="handleJoin('heroEmail', this)">Join Drop</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="hero-scroll" id="heroScroll">
+        <span class="hero-scroll-txt">Scroll</span>
+        <div class="hero-scroll-stem"></div>
+    </div>
+</section>
+
+<!-- ─────────────── MARQUEE 1 ─────────────── -->
+<div class="marquee">
+    <div class="marquee-track">
+        <!-- 10 items × 2 = seamless infinite loop -->
+        <div class="marquee-item"><span class="marquee-word">Skilled Society</span><span class="marquee-dot"></span></div>
+        <div class="marquee-item"><span class="marquee-word">Made in New Jersey</span><span class="marquee-dot"></span></div>
+        <div class="marquee-item"><span class="marquee-word">Wear the Work</span><span class="marquee-dot"></span></div>
+        <div class="marquee-item"><span class="marquee-word">Drop 001 Incoming</span><span class="marquee-dot"></span></div>
+        <div class="marquee-item"><span class="marquee-word">Built by Hand</span><span class="marquee-dot"></span></div>
+        <div class="marquee-item"><span class="marquee-word">Skilled Society</span><span class="marquee-dot"></span></div>
+        <div class="marquee-item"><span class="marquee-word">Made in New Jersey</span><span class="marquee-dot"></span></div>
+        <div class="marquee-item"><span class="marquee-word">Wear the Work</span><span class="marquee-dot"></span></div>
+        <div class="marquee-item"><span class="marquee-word">Drop 001 Incoming</span><span class="marquee-dot"></span></div>
+        <div class="marquee-item"><span class="marquee-word">Built by Hand</span><span class="marquee-dot"></span></div>
+    </div>
+</div>
+
+<!-- ─────────────── STORY ─────────────── -->
+<section class="story" id="story">
+    <div class="eyebrow">
+        <div class="eyebrow-bar"></div>
+        <span class="eyebrow-label">The Society</span>
+        <span class="eyebrow-num">01</span>
+    </div>
+
+    <div class="story-quote reveal">
+        WE DIDN&rsquo;T START IN A STUDIO.<br>
+        WE STARTED ON A <span class="hi">JOB SITE.</span>
+    </div>
+
+    <div class="story-cards">
+        <div class="story-card reveal">
+            <div class="card-num">01</div>
+            <div class="card-title">BUILT BY HAND</div>
+            <p class="card-text">Every piece is designed and printed in-house in New Jersey. No overseas shortcuts, no compromise on craft. We know what it means to take pride in your work.</p>
+            <div class="card-accent"></div>
+        </div>
+        <div class="story-card reveal">
+            <div class="card-num">02</div>
+            <div class="card-title">MADE IN NJ</div>
+            <p class="card-text">Rooted in New Jersey. Skilled Society is built on the same blue-collar foundation that defines this state &mdash; hard work, straight talk, and zero pretense.</p>
+            <div class="card-accent"></div>
+        </div>
+        <div class="story-card reveal">
+            <div class="card-num">03</div>
+            <div class="card-title">WORN WITH PURPOSE</div>
+            <p class="card-text">This isn&rsquo;t fast fashion. These are limited pieces made for people who understand that quality takes time &mdash; and that&rsquo;s exactly what makes it worth wearing.</p>
+            <div class="card-accent"></div>
+        </div>
+    </div>
+</section>
+
+<!-- ─────────────── TEASER ─────────────── -->
+<section class="teaser" id="teaser">
+    <div class="teaser-head">
+        <div>
+            <div class="eyebrow">
+                <div class="eyebrow-bar"></div>
+                <span class="eyebrow-label">Designs</span>
+                <span class="eyebrow-num">02</span>
+            </div>
+            <h2 class="teaser-title reveal">DROP 001<br>INCOMING</h2>
+        </div>
+        <p class="teaser-aside reveal">
+            The first collection is in production. Join the drop list for 48-hour early access before public release.
+        </p>
+    </div>
+
+    <div class="teaser-grid">
+        <!-- Card 1 -->
+        <div class="t-card reveal">
+            <div class="t-card-blur">
+                <div class="t-card-icon">
+                    <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M30 20 L50 10 L70 20 L70 55 C70 70 50 80 50 80 C50 80 30 70 30 55 Z" stroke="white" stroke-width="2"/>
+                        <line x1="50" y1="30" x2="50" y2="60" stroke="white" stroke-width="2"/>
+                        <line x1="38" y1="45" x2="62" y2="45" stroke="white" stroke-width="2"/>
+                    </svg>
+                </div>
+            </div>
+            <div class="t-card-overlay">
+                <span class="t-badge">Coming Soon</span>
+                <span class="t-label">DESIGN 001</span>
+                <span class="t-status">&#9679; In Production</span>
+            </div>
+        </div>
+        <!-- Card 2 -->
+        <div class="t-card reveal">
+            <div class="t-card-blur">
+                <div class="t-card-icon">
+                    <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <circle cx="50" cy="50" r="34" stroke="white" stroke-width="2"/>
+                        <circle cx="50" cy="50" r="18" stroke="white" stroke-width="2"/>
+                        <circle cx="50" cy="50" r="5" fill="white"/>
+                        <line x1="50" y1="16" x2="50" y2="26" stroke="white" stroke-width="2"/>
+                        <line x1="50" y1="74" x2="50" y2="84" stroke="white" stroke-width="2"/>
+                        <line x1="16" y1="50" x2="26" y2="50" stroke="white" stroke-width="2"/>
+                        <line x1="74" y1="50" x2="84" y2="50" stroke="white" stroke-width="2"/>
+                    </svg>
+                </div>
+            </div>
+            <div class="t-card-overlay">
+                <span class="t-badge">Coming Soon</span>
+                <span class="t-label">DESIGN 002</span>
+                <span class="t-status">&#9679; In Production</span>
+            </div>
+        </div>
+        <!-- Card 3 -->
+        <div class="t-card reveal">
+            <div class="t-card-blur">
+                <div class="t-card-icon">
+                    <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <rect x="15" y="15" width="30" height="30" stroke="white" stroke-width="2"/>
+                        <rect x="55" y="15" width="30" height="30" stroke="white" stroke-width="2"/>
+                        <rect x="15" y="55" width="30" height="30" stroke="white" stroke-width="2"/>
+                        <rect x="55" y="55" width="30" height="30" stroke="white" stroke-width="2"/>
+                    </svg>
+                </div>
+            </div>
+            <div class="t-card-overlay">
+                <span class="t-badge">Coming Soon</span>
+                <span class="t-label">DESIGN 003</span>
+                <span class="t-status">&#9679; In Production</span>
+            </div>
+        </div>
+        <!-- Card 4 -->
+        <div class="t-card reveal">
+            <div class="t-card-blur">
+                <div class="t-card-icon">
+                    <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <polygon points="50,12 88,88 12,88" stroke="white" stroke-width="2" fill="none"/>
+                        <line x1="50" y1="38" x2="50" y2="68" stroke="white" stroke-width="2"/>
+                        <circle cx="50" cy="76" r="3" fill="white"/>
+                    </svg>
+                </div>
+            </div>
+            <div class="t-card-overlay">
+                <span class="t-badge">Coming Soon</span>
+                <span class="t-label">DESIGN 004</span>
+                <span class="t-status">&#9679; In Production</span>
+            </div>
+        </div>
+    </div>
+
+    <p class="teaser-note reveal">
+        More designs dropping with the collection. Join the list to see them first.
+    </p>
+</section>
+
+<!-- ─────────────── DROP ─────────────── -->
+<section class="drop" id="drop">
+    <div class="drop-inner">
+        <p class="drop-sub reveal-d">Drop 001 &mdash; New Jersey</p>
+        <h2 class="drop-h2 reveal-d">FIRST DROP<br>IS COMING.</h2>
+
+        <div class="countdown">
+            <div class="cd-unit">
+                <span class="cd-num" id="cdDays">00</span>
+                <span class="cd-label">Days</span>
+            </div>
+            <div class="cd-unit">
+                <span class="cd-num" id="cdHrs">00</span>
+                <span class="cd-label">Hours</span>
+            </div>
+            <div class="cd-unit">
+                <span class="cd-num" id="cdMin">00</span>
+                <span class="cd-label">Mins</span>
+            </div>
+            <div class="cd-unit">
+                <span class="cd-num" id="cdSec">00</span>
+                <span class="cd-label">Secs</span>
+            </div>
+        </div>
+
+        <div class="drop-form reveal-d">
+            <input type="email" class="drop-input" placeholder="Enter your email" id="dropEmail">
+            <button class="drop-btn" onclick="handleJoin('dropEmail', this)">Lock In</button>
+        </div>
+        <p class="drop-fine reveal-d">No spam. First access only. Unsubscribe anytime.</p>
+    </div>
+</section>
+
+<!-- ─────────────── MARQUEE 2 ─────────────── -->
+<div class="marquee">
+    <div class="marquee-track rev">
+        <div class="marquee-item"><span class="marquee-word">Skilled Society</span><span class="marquee-dot"></span></div>
+        <div class="marquee-item"><span class="marquee-word">New Jersey</span><span class="marquee-dot"></span></div>
+        <div class="marquee-item"><span class="marquee-word">Wear the Work</span><span class="marquee-dot"></span></div>
+        <div class="marquee-item"><span class="marquee-word">Drop 001</span><span class="marquee-dot"></span></div>
+        <div class="marquee-item"><span class="marquee-word">Built by Hand</span><span class="marquee-dot"></span></div>
+        <div class="marquee-item"><span class="marquee-word">Skilled Society</span><span class="marquee-dot"></span></div>
+        <div class="marquee-item"><span class="marquee-word">New Jersey</span><span class="marquee-dot"></span></div>
+        <div class="marquee-item"><span class="marquee-word">Wear the Work</span><span class="marquee-dot"></span></div>
+        <div class="marquee-item"><span class="marquee-word">Drop 001</span><span class="marquee-dot"></span></div>
+        <div class="marquee-item"><span class="marquee-word">Built by Hand</span><span class="marquee-dot"></span></div>
+    </div>
+</div>
+
+<!-- ─────────────── FOOTER ─────────────── -->
+<footer>
+    <div class="foot-top">
+        <div class="foot-brand">
+            <div class="foot-logo">SKILLED<br><em>SOCIETY</em></div>
+            <p class="foot-desc">
+                Premium streetwear built by hand in New Jersey.
+                Made by those who know the value of craft.
+            </p>
+        </div>
+        <div class="foot-cols">
+            <div class="foot-col">
+                <div class="foot-col-head">Navigate</div>
+                <a href="#home">Home</a>
+                <a href="#story">About</a>
+                <a href="#teaser">Designs</a>
+                <a href="#drop">Join the Drop</a>
+            </div>
+            <div class="foot-col">
+                <div class="foot-col-head">Connect</div>
+                <a href="#">Instagram</a>
+                <a href="#">TikTok</a>
+                <a href="#">Contact</a>
+            </div>
+        </div>
+    </div>
+    <div class="foot-bottom">
+        <span class="foot-copy">&copy; 2025 Skilled Society. All rights reserved. New Jersey, USA.</span>
+        <span class="foot-sig">NJ &nbsp;&#124;&nbsp; SS</span>
+    </div>
+</footer>
+
+<!-- ═══════════════════════════════════════════════════════════ -->
+<script>
+gsap.registerPlugin(ScrollTrigger);
+
+// ── Custom Cursor ──────────────────────────────────────────────
+const cur  = document.getElementById('cur');
+const ring = document.getElementById('ring');
+let mx = 0, my = 0, rx = 0, ry = 0;
+
+document.addEventListener('mousemove', e => {
+    mx = e.clientX; my = e.clientY;
+    cur.style.left  = mx + 'px';
+    cur.style.top   = my + 'px';
+});
+(function tick() {
+    rx += (mx - rx) * 0.11;
+    ry += (my - ry) * 0.11;
+    ring.style.left = rx + 'px';
+    ring.style.top  = ry + 'px';
+    requestAnimationFrame(tick);
+})();
+
+// ── Loader ─────────────────────────────────────────────────────
+const loader = document.getElementById('loader');
+const fill   = document.getElementById('lFill');
+
+const loaderTl = gsap.timeline({
+    onComplete() {
+        gsap.to(loader, {
+            opacity: 0, duration: 0.55, ease: 'power2.inOut',
+            onComplete() {
+                loader.style.display = 'none';
+                heroEntrance();
+            }
+        });
+    }
+});
+loaderTl
+    .to('#lw1', { y: 0, duration: 0.55, ease: 'power3.out' })
+    .to('#lw2', { y: 0, duration: 0.55, ease: 'power3.out' }, '-=0.25')
+    .to(fill,   { width: '100%', duration: 0.9, ease: 'power2.inOut' }, '-=0.1')
+    .to({}, { duration: 0.3 });
+
+// ── Hero Entrance ──────────────────────────────────────────────
+function heroEntrance() {
+    const tl = gsap.timeline();
+    tl
+        .to('#heroEye',    { opacity: 1, y: 0, duration: 0.55, ease: 'power3.out' })
+        .to('#h1a',        { y: 0, duration: 0.75, ease: 'power3.out' }, '-=0.15')
+        .to('#h1b',        { y: 0, duration: 0.75, ease: 'power3.out' }, '-=0.5')
+        .to('#heroRule',   { opacity: 1, scaleX: 1, duration: 0.7, ease: 'power3.out' }, '-=0.35')
+        .to('#heroFoot',   { opacity: 1, y: 0, duration: 0.65, ease: 'power3.out' }, '-=0.3')
+        .to('#heroBadge',  { opacity: 1, duration: 0.5 }, '-=0.2')
+        .to('#heroScroll', { opacity: 1, duration: 0.4 }, '-=0.1');
+}
+
+// ── Scroll Reveals ─────────────────────────────────────────────
+gsap.utils.toArray('.reveal').forEach(el => {
+    gsap.to(el, {
+        opacity: 1, y: 0,
+        duration: 0.75, ease: 'power3.out',
+        scrollTrigger: {
+            trigger: el,
+            start: 'top 87%',
+            toggleActions: 'play none none none'
+        }
+    });
+});
+
+// ── Nav Scroll State ───────────────────────────────────────────
+const nav = document.getElementById('nav');
+window.addEventListener('scroll', () => {
+    nav.classList.toggle('scrolled', window.scrollY > 60);
+}, { passive: true });
+
+// ── Countdown ─────────────────────────────────────────────────
+// Set the drop date here — update this when Claudia confirms the date
+const DROP_DATE = new Date(Date.now() + 45 * 24 * 60 * 60 * 1000); // 45 days from now
+
+function pad(n) { return String(n).padStart(2, '0'); }
+
+function tick() {
+    const diff = DROP_DATE - Date.now();
+    if (diff <= 0) {
+        ['cdDays','cdHrs','cdMin','cdSec'].forEach(id => {
+            document.getElementById(id).textContent = '00';
+        });
+        return;
+    }
+    document.getElementById('cdDays').textContent = pad(Math.floor(diff / 86400000));
+    document.getElementById('cdHrs').textContent  = pad(Math.floor(diff % 86400000 / 3600000));
+    document.getElementById('cdMin').textContent  = pad(Math.floor(diff % 3600000  / 60000));
+    document.getElementById('cdSec').textContent  = pad(Math.floor(diff % 60000   / 1000));
+}
+tick();
+setInterval(tick, 1000);
+
+// ── Email Join Handler ─────────────────────────────────────────
+function handleJoin(inputId, btn) {
+    const input = document.getElementById(inputId);
+    if (!input || !input.value.includes('@')) {
+        input.style.borderColor = '#ff4444';
+        setTimeout(() => input.style.borderColor = '', 1200);
+        return;
+    }
+    const orig = btn.textContent;
+    btn.textContent = 'You\'re In ✓';
+    input.value = '';
+    setTimeout(() => { btn.textContent = orig; }, 3000);
+}
+</script>
+</body>
+</html>
