@@ -13,13 +13,13 @@
 
     <style>
         :root {
-            --black:       #0C0C0C;
-            --white:       #F0EDE8;
-            --orange:      #B8A898;
-            --gray:        #131313;
-            --gray-mid:    #1C1C1C;
-            --gray-border: #2A2A2A;
-            --muted:       #666666;
+            --black:       #F2EDE5;
+            --white:       #1A1816;
+            --orange:      #7A6E62;
+            --gray:        #EAE4DB;
+            --gray-mid:    #DDD7CC;
+            --gray-border: #C4BCB2;
+            --muted:       #8A837A;
             --display:     'Bebas Neue', sans-serif;
             --body:        'Inter', sans-serif;
         }
@@ -96,7 +96,7 @@
             border-bottom: 1px solid transparent;
         }
         nav.scrolled {
-            background: rgba(10,10,10,.94);
+            background: rgba(242,237,229,.96);
             backdrop-filter: blur(14px);
             padding: 18px 48px;
             border-color: var(--gray-border);
@@ -138,14 +138,14 @@
         .hero-grid {
             position: absolute; inset: 0;
             background-image:
-                linear-gradient(rgba(255,106,0,.025) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(255,106,0,.025) 1px, transparent 1px);
+                linear-gradient(rgba(26,24,22,.05) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(26,24,22,.05) 1px, transparent 1px);
             background-size: 64px 64px;
             pointer-events: none;
         }
         .hero-glow {
             position: absolute; inset: 0;
-            background: radial-gradient(ellipse at 65% 50%, rgba(184,168,152,.05) 0%, transparent 55%);
+            background: radial-gradient(ellipse at 65% 50%, rgba(122,110,98,.08) 0%, transparent 55%);
             pointer-events: none;
         }
         /* corner badge */
@@ -374,8 +374,8 @@
         }
         .t-card {
             position: relative; aspect-ratio: 3/4;
-            background: var(--gray);
-            border: 1px solid var(--gray-border);
+            background: #181410;
+            border: 1px solid #2A2520;
             overflow: hidden; cursor: none;
         }
         .t-card-blur {
@@ -387,8 +387,8 @@
         .t-card:hover .t-card-blur { filter: blur(2px); }
         .t-card-icon {
             width: 56%; aspect-ratio: 1;
-            background: var(--gray-mid);
-            border: 1px solid var(--gray-border);
+            background: #221E1A;
+            border: 1px solid #2A2520;
             display: flex; align-items: center; justify-content: center;
         }
         .t-card-icon svg { width: 42%; opacity: .18; }
@@ -429,7 +429,7 @@
         .drop::before {
             content: '';
             position: absolute; inset: 0;
-            background: radial-gradient(ellipse at 50% 100%, rgba(184,168,152,.08) 0%, transparent 65%);
+            background: radial-gradient(ellipse at 50% 100%, rgba(242,237,229,.04) 0%, transparent 65%);
             pointer-events: none;
         }
         .drop-inner {
@@ -574,12 +574,12 @@
             top: 10px; left: 10px;
             font-size: 7px; font-weight: 600;
             letter-spacing: .18em; text-transform: uppercase;
-            color: #2E2E2E;
-            border: 1px solid #252525;
+            color: #4A4540;
+            border: 1px solid #383330;
             padding: 3px 8px;
             pointer-events: none;
             z-index: 10;
-            background: rgba(12,12,12,.7);
+            background: rgba(15,12,10,.75);
         }
         .ph-note {
             font-size: 9px; color: #2E2E2E;
