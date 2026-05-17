@@ -1,0 +1,737 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shop — Skilled Society</title>
+    <meta name="description" content="Skilled Society Drop 001 — Coming Soon. Join the list for early access to New Jersey's newest streetwear brand.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+
+    <style>
+        :root {
+            --black:       #F2EDE5;
+            --white:       #1A1816;
+            --orange:      #7A6E62;
+            --gray:        #EAE4DB;
+            --gray-mid:    #DDD7CC;
+            --gray-border: #C4BCB2;
+            --muted:       #8A837A;
+            --display:     'Bebas Neue', sans-serif;
+            --body:        'Inter', sans-serif;
+        }
+
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+
+        body {
+            background: var(--black);
+            color: var(--white);
+            font-family: var(--body);
+            overflow-x: hidden;
+            cursor: none;
+        }
+
+        /* ── Cursor ───────────────────────────────────────────── */
+        .cursor {
+            position: fixed;
+            width: 10px; height: 10px;
+            background: var(--orange);
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 9999;
+            transform: translate(-50%, -50%);
+            transition: width .15s, height .15s;
+        }
+        .cursor-ring {
+            position: fixed;
+            width: 38px; height: 38px;
+            border: 1px solid rgba(122,110,98,.4);
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 9998;
+            transform: translate(-50%, -50%);
+            transition: width .2s, height .2s, border-color .2s;
+        }
+
+        /* ── Nav ──────────────────────────────────────────────── */
+        nav {
+            position: fixed; top: 0; left: 0; right: 0;
+            z-index: 1000;
+            padding: 28px 48px;
+            display: flex; align-items: center; justify-content: space-between;
+            transition: background .3s, padding .3s, border-color .3s;
+            border-bottom: 1px solid transparent;
+            background: rgba(242,237,229,.96);
+            backdrop-filter: blur(14px);
+            border-color: var(--gray-border);
+        }
+        .nav-logo {
+            font-family: var(--display);
+            font-size: 20px; letter-spacing: .22em;
+            color: var(--white); text-decoration: none;
+        }
+        .nav-logo em { font-style: normal; color: var(--orange); }
+        .nav-links {
+            display: flex; align-items: center; gap: 36px;
+        }
+        .nav-links a {
+            font-size: 10px; font-weight: 500;
+            letter-spacing: .18em; text-transform: uppercase;
+            color: var(--muted); text-decoration: none;
+            transition: color .2s;
+        }
+        .nav-links a:hover, .nav-links a.active { color: var(--white); }
+        .nav-drop {
+            font-size: 10px; font-weight: 700;
+            letter-spacing: .18em; text-transform: uppercase;
+            color: var(--orange);
+            border: 1px solid var(--orange);
+            padding: 9px 22px;
+            text-decoration: none;
+            transition: background .2s, color .2s;
+        }
+        .nav-drop:hover { background: var(--orange); color: var(--black); }
+
+        /* ── Drop Banner ──────────────────────────────────────── */
+        .drop-banner {
+            margin-top: 97px;
+            background: #1A1816;
+            padding: 14px 48px;
+            display: flex; align-items: center;
+            justify-content: center; gap: 16px;
+        }
+        .drop-banner-dot {
+            width: 6px; height: 6px;
+            background: #9A8E82; border-radius: 50%;
+            animation: pulse 2s ease infinite;
+        }
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: .3; }
+        }
+        .drop-banner-text {
+            font-size: 10px; font-weight: 600;
+            letter-spacing: .28em; text-transform: uppercase;
+            color: #9A8E82;
+        }
+        .drop-banner-text span { color: #EDE8E0; }
+
+        /* ── Page Header ──────────────────────────────────────── */
+        .shop-header {
+            padding: 64px 48px 40px;
+            border-bottom: 1px solid var(--gray-border);
+        }
+        .shop-header-top {
+            display: flex; align-items: flex-end;
+            justify-content: space-between; flex-wrap: wrap; gap: 24px;
+            margin-bottom: 40px;
+        }
+        .shop-title {
+            font-family: var(--display);
+            font-size: clamp(52px, 8vw, 110px);
+            line-height: .9; letter-spacing: .01em;
+            opacity: 0; transform: translateY(30px);
+        }
+        .shop-title em { font-style: normal; color: var(--orange); }
+        .shop-meta {
+            text-align: right; opacity: 0;
+        }
+        .shop-meta-label {
+            font-size: 9px; font-weight: 700;
+            letter-spacing: .28em; text-transform: uppercase;
+            color: var(--orange); margin-bottom: 6px;
+        }
+        .shop-meta-val {
+            font-family: var(--display);
+            font-size: 28px; letter-spacing: .06em;
+            color: var(--muted);
+        }
+
+        /* ── Filter Bar ───────────────────────────────────────── */
+        .filter-bar {
+            display: flex; align-items: center;
+            justify-content: space-between; flex-wrap: wrap; gap: 16px;
+        }
+        .filter-tabs {
+            display: flex; gap: 0;
+        }
+        .filter-tab {
+            font-size: 9px; font-weight: 600;
+            letter-spacing: .2em; text-transform: uppercase;
+            color: var(--muted);
+            border: 1px solid var(--gray-border);
+            border-right: none;
+            padding: 9px 20px;
+            cursor: none;
+            transition: all .2s;
+            background: none;
+            font-family: var(--body);
+        }
+        .filter-tab:last-child { border-right: 1px solid var(--gray-border); }
+        .filter-tab.active, .filter-tab:hover {
+            background: var(--white);
+            color: var(--black);
+            border-color: var(--white);
+        }
+        .filter-sort {
+            font-size: 9px; font-weight: 600;
+            letter-spacing: .2em; text-transform: uppercase;
+            color: var(--muted);
+            display: flex; align-items: center; gap: 10px;
+        }
+        .ph-note { font-size: 9px; color: var(--gray-border); font-style: italic; }
+
+        /* ── Product Grid ─────────────────────────────────────── */
+        .shop-grid-wrap { padding: 48px 48px 120px; }
+        .shop-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2px;
+        }
+
+        /* ── Product Card ─────────────────────────────────────── */
+        .prod-card {
+            position: relative;
+            background: var(--gray);
+            border: 1px solid var(--gray-border);
+            cursor: none;
+            transition: border-color .3s;
+        }
+        .prod-card:hover { border-color: var(--orange); }
+
+        .prod-img {
+            aspect-ratio: 3/4;
+            background: #1A1816;
+            position: relative;
+            overflow: hidden;
+            display: flex; align-items: center; justify-content: center;
+        }
+        .prod-img-inner {
+            display: flex; flex-direction: column;
+            align-items: center; gap: 16px;
+            filter: blur(3px);
+            transition: filter .4s;
+        }
+        .prod-card:hover .prod-img-inner { filter: blur(1px); }
+        .prod-img-icon {
+            width: 80px; height: 80px;
+            border: 1px solid #2A2520;
+            display: flex; align-items: center; justify-content: center;
+        }
+        .prod-img-icon svg { width: 44px; opacity: .15; }
+        .prod-img-label {
+            font-size: 8px; letter-spacing: .2em;
+            text-transform: uppercase; color: #333;
+        }
+        .prod-badge {
+            position: absolute; top: 14px; left: 14px;
+            background: #9A8E82; color: #1A1816;
+            font-size: 7px; font-weight: 700;
+            letter-spacing: .22em; text-transform: uppercase;
+            padding: 4px 10px;
+        }
+        .ph-tag {
+            position: absolute; top: 14px; right: 14px;
+            font-size: 7px; font-weight: 600;
+            letter-spacing: .18em; text-transform: uppercase;
+            color: #3A3530;
+            border: 1px solid #2A2520;
+            padding: 3px 8px;
+            background: rgba(15,12,10,.75);
+        }
+
+        .prod-info {
+            padding: 20px 22px 22px;
+            background: var(--black);
+            border-top: 1px solid var(--gray-border);
+        }
+        .prod-name {
+            font-family: var(--display);
+            font-size: 20px; letter-spacing: .06em;
+            color: var(--white); margin-bottom: 4px;
+        }
+        .prod-sub {
+            font-size: 10px; letter-spacing: .12em;
+            color: var(--muted); margin-bottom: 16px;
+            text-transform: uppercase;
+        }
+        .prod-footer {
+            display: flex; align-items: center;
+            justify-content: space-between;
+        }
+        .prod-price {
+            font-family: var(--display);
+            font-size: 22px; letter-spacing: .06em;
+            color: var(--muted);
+        }
+        .prod-price span {
+            font-size: 9px; font-weight: 600;
+            letter-spacing: .18em; font-family: var(--body);
+            text-transform: uppercase; display: block;
+            color: var(--gray-border); margin-bottom: 2px;
+        }
+        .prod-notify {
+            font-size: 9px; font-weight: 700;
+            letter-spacing: .18em; text-transform: uppercase;
+            color: var(--orange);
+            border: 1px solid var(--orange);
+            padding: 8px 16px; background: none;
+            font-family: var(--body);
+            cursor: none;
+            transition: all .2s;
+        }
+        .prod-notify:hover {
+            background: var(--orange); color: var(--black);
+        }
+        .prod-notify.confirmed {
+            background: var(--orange); color: var(--black);
+            border-color: var(--orange);
+        }
+
+        /* ── Coming Soon Block ────────────────────────────────── */
+        .coming-block {
+            grid-column: 1 / -1;
+            background: var(--gray);
+            border: 1px solid var(--gray-border);
+            border-style: dashed;
+            padding: 80px 48px;
+            display: flex; flex-direction: column;
+            align-items: center; justify-content: center;
+            gap: 16px; text-align: center;
+        }
+        .coming-block-title {
+            font-family: var(--display);
+            font-size: clamp(28px, 4vw, 52px);
+            letter-spacing: .06em; color: var(--muted);
+        }
+        .coming-block-text {
+            font-size: 12px; color: var(--gray-border);
+            letter-spacing: .08em; max-width: 320px; line-height: 1.7;
+        }
+
+        /* ── Drop CTA ─────────────────────────────────────────── */
+        .shop-cta {
+            background: #111111;
+            border-top: 1px solid #2A2520;
+            padding: 100px 48px;
+        }
+        .shop-cta-inner {
+            max-width: 680px; margin: 0 auto; text-align: center;
+        }
+        .shop-cta-label {
+            font-size: 9px; font-weight: 700;
+            letter-spacing: .32em; text-transform: uppercase;
+            color: #9A8E82; margin-bottom: 20px;
+        }
+        .shop-cta-title {
+            font-family: var(--display);
+            font-size: clamp(44px, 7vw, 96px);
+            line-height: .9; letter-spacing: .02em;
+            color: #EDE8E0; margin-bottom: 16px;
+        }
+        .shop-cta-title span { color: #C8B89A; }
+        .shop-cta-sub {
+            font-size: 13px; color: #4A4440;
+            line-height: 1.7; margin-bottom: 40px;
+        }
+        .cta-form { display: flex; max-width: 420px; margin: 0 auto; }
+        .cta-input {
+            flex: 1;
+            background: rgba(255,255,255,.05);
+            border: 1px solid #2A2520; border-right: none;
+            color: #EDE8E0;
+            font-family: var(--body); font-size: 13px;
+            padding: 15px 20px; outline: none;
+            transition: border-color .2s;
+        }
+        .cta-input::placeholder { color: #3A3530; }
+        .cta-input:focus { border-color: #9A8E82; }
+        .cta-btn {
+            background: #9A8E82; border: 1px solid #9A8E82;
+            color: #1A1816;
+            font-family: var(--body); font-size: 9px; font-weight: 700;
+            letter-spacing: .2em; text-transform: uppercase;
+            padding: 15px 24px; cursor: none;
+            transition: background .2s, color .2s;
+        }
+        .cta-btn:hover { background: transparent; color: #9A8E82; }
+
+        /* ── Footer ───────────────────────────────────────────── */
+        footer {
+            background: var(--black);
+            border-top: 1px solid var(--gray-border);
+            padding: 72px 48px 48px;
+        }
+        .foot-top {
+            display: flex; align-items: flex-start;
+            justify-content: space-between; flex-wrap: wrap;
+            gap: 40px; margin-bottom: 64px;
+        }
+        .foot-brand { max-width: 300px; }
+        .foot-logo {
+            font-family: var(--display);
+            font-size: 38px; letter-spacing: .1em;
+            line-height: 1; margin-bottom: 18px;
+        }
+        .foot-logo em { font-style: normal; color: var(--orange); }
+        .foot-desc { font-size: 12px; color: var(--muted); line-height: 1.8; letter-spacing: .03em; }
+        .foot-cols { display: flex; gap: 64px; flex-wrap: wrap; }
+        .foot-col-head {
+            font-size: 9px; font-weight: 700;
+            letter-spacing: .28em; text-transform: uppercase;
+            color: var(--orange); margin-bottom: 20px;
+        }
+        .foot-col a {
+            display: block; font-size: 12px;
+            color: var(--muted); text-decoration: none;
+            margin-bottom: 12px; letter-spacing: .04em; transition: color .2s;
+        }
+        .foot-col a:hover { color: var(--white); }
+        .foot-bottom {
+            border-top: 1px solid var(--gray-border); padding-top: 32px;
+            display: flex; align-items: center;
+            justify-content: space-between; flex-wrap: wrap; gap: 16px;
+        }
+        .foot-copy { font-size: 10px; color: var(--muted); letter-spacing: .1em; }
+        .foot-sig { font-family: var(--display); font-size: 13px; letter-spacing: .32em; color: var(--gray-border); }
+
+        /* ── Reveal ───────────────────────────────────────────── */
+        .reveal { opacity: 0; transform: translateY(24px); }
+
+        /* ── Responsive ───────────────────────────────────────── */
+        @media (max-width: 900px) {
+            .shop-grid { grid-template-columns: repeat(2, 1fr); }
+        }
+        @media (max-width: 768px) {
+            nav { padding: 20px 24px; border-color: var(--gray-border); }
+            .nav-links a:not(.nav-drop) { display: none; }
+            .drop-banner { padding: 12px 24px; }
+            .shop-header { padding: 48px 24px 32px; }
+            .shop-grid-wrap { padding: 32px 24px 80px; }
+            .shop-cta { padding: 80px 24px; }
+            footer { padding: 60px 24px 40px; }
+            .coming-block { padding: 60px 24px; }
+        }
+        @media (max-width: 540px) {
+            .shop-grid { grid-template-columns: repeat(2, 1fr); }
+            .cta-form { flex-direction: column; }
+            .cta-input { border-right: 1px solid #2A2520; border-bottom: none; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- Cursor -->
+<div class="cursor" id="cur"></div>
+<div class="cursor-ring" id="ring"></div>
+
+<!-- Nav -->
+<nav>
+    <a href="index.html" class="nav-logo">SKILLED <em>SOCIETY</em></a>
+    <div class="nav-links">
+        <a href="about.html">About</a>
+        <a href="shop.html" class="active">Shop</a>
+        <a href="index.html#drop">The Drop</a>
+        <a href="index.html#drop" class="nav-drop">Join the Drop</a>
+    </div>
+</nav>
+
+<!-- ─────────────── DROP BANNER ─────────────── -->
+<div class="drop-banner">
+    <div class="drop-banner-dot"></div>
+    <p class="drop-banner-text">
+        <span>Drop 001</span> — Products dropping soon. Join the list for first access.
+    </p>
+</div>
+
+<!-- ─────────────── SHOP HEADER ─────────────── -->
+<div class="shop-header">
+    <div class="shop-header-top">
+        <h1 class="shop-title" id="shopTitle">
+            THE<br><em>SHOP</em>
+        </h1>
+        <div class="shop-meta" id="shopMeta">
+            <div class="shop-meta-label">Drop</div>
+            <div class="shop-meta-val">001 — NJ</div>
+        </div>
+    </div>
+    <div class="filter-bar reveal">
+        <div class="filter-tabs">
+            <button class="filter-tab active">All</button>
+            <button class="filter-tab">Tees <span class="ph-note">(tbd)</span></button>
+            <button class="filter-tab">Hoodies <span class="ph-note">(tbd)</span></button>
+            <button class="filter-tab">Headwear <span class="ph-note">(tbd)</span></button>
+        </div>
+        <div class="filter-sort">
+            Sort: <span class="ph-note">Available at launch</span>
+        </div>
+    </div>
+</div>
+
+<!-- ─────────────── PRODUCT GRID ─────────────── -->
+<div class="shop-grid-wrap">
+    <div class="shop-grid">
+
+        <!-- Product 1 -->
+        <div class="prod-card reveal">
+            <div class="prod-img">
+                <span class="prod-badge">Drop 001</span>
+                <span class="ph-tag">placeholder</span>
+                <div class="prod-img-inner">
+                    <div class="prod-img-icon">
+                        <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M20 30 L35 20 L50 28 L65 20 L80 30 L75 75 L50 82 L25 75 Z" stroke="white" stroke-width="1.5"/>
+                            <line x1="50" y1="28" x2="50" y2="82" stroke="white" stroke-width="1"/>
+                        </svg>
+                    </div>
+                    <span class="prod-img-label">Product image</span>
+                </div>
+            </div>
+            <div class="prod-info">
+                <div class="prod-name">SS FOUNDATION TEE</div>
+                <div class="prod-sub">Heavyweight — Drop 001 <span class="ph-note">(placeholder)</span></div>
+                <div class="prod-footer">
+                    <div class="prod-price">
+                        <span>Price</span>TBD
+                    </div>
+                    <button class="prod-notify" onclick="notifyMe(this)">Notify Me</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Product 2 -->
+        <div class="prod-card reveal">
+            <div class="prod-img">
+                <span class="prod-badge">Drop 001</span>
+                <span class="ph-tag">placeholder</span>
+                <div class="prod-img-inner">
+                    <div class="prod-img-icon">
+                        <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <rect x="18" y="25" width="64" height="55" rx="2" stroke="white" stroke-width="1.5"/>
+                            <path d="M18 40 L50 40 L82 40" stroke="white" stroke-width="1"/>
+                            <circle cx="50" cy="32" r="6" stroke="white" stroke-width="1.5"/>
+                        </svg>
+                    </div>
+                    <span class="prod-img-label">Product image</span>
+                </div>
+            </div>
+            <div class="prod-info">
+                <div class="prod-name">SKILLED LOGO TEE</div>
+                <div class="prod-sub">Midweight — Drop 001 <span class="ph-note">(placeholder)</span></div>
+                <div class="prod-footer">
+                    <div class="prod-price">
+                        <span>Price</span>TBD
+                    </div>
+                    <button class="prod-notify" onclick="notifyMe(this)">Notify Me</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Product 3 -->
+        <div class="prod-card reveal">
+            <div class="prod-img">
+                <span class="prod-badge">Drop 001</span>
+                <span class="ph-tag">placeholder</span>
+                <div class="prod-img-inner">
+                    <div class="prod-img-icon">
+                        <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M15 45 L30 25 L50 30 L70 25 L85 45 L75 48 L75 80 L25 80 L25 48 Z" stroke="white" stroke-width="1.5"/>
+                            <path d="M15 45 L25 48" stroke="white" stroke-width="1"/>
+                            <path d="M85 45 L75 48" stroke="white" stroke-width="1"/>
+                        </svg>
+                    </div>
+                    <span class="prod-img-label">Product image</span>
+                </div>
+            </div>
+            <div class="prod-info">
+                <div class="prod-name">NJ TRADES HOODIE</div>
+                <div class="prod-sub">Fleece — Drop 001 <span class="ph-note">(placeholder)</span></div>
+                <div class="prod-footer">
+                    <div class="prod-price">
+                        <span>Price</span>TBD
+                    </div>
+                    <button class="prod-notify" onclick="notifyMe(this)">Notify Me</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Product 4 -->
+        <div class="prod-card reveal">
+            <div class="prod-img">
+                <span class="prod-badge">Drop 001</span>
+                <span class="ph-tag">placeholder</span>
+                <div class="prod-img-inner">
+                    <div class="prod-img-icon">
+                        <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M20 55 Q50 20 80 55" stroke="white" stroke-width="1.5" fill="none"/>
+                            <line x1="20" y1="55" x2="80" y2="55" stroke="white" stroke-width="1.5"/>
+                            <line x1="35" y1="55" x2="35" y2="75" stroke="white" stroke-width="1"/>
+                            <line x1="65" y1="55" x2="65" y2="75" stroke="white" stroke-width="1"/>
+                            <line x1="30" y1="75" x2="70" y2="75" stroke="white" stroke-width="1.5"/>
+                        </svg>
+                    </div>
+                    <span class="prod-img-label">Product image</span>
+                </div>
+            </div>
+            <div class="prod-info">
+                <div class="prod-name">SS SNAPBACK</div>
+                <div class="prod-sub">Structured — Drop 001 <span class="ph-note">(placeholder)</span></div>
+                <div class="prod-footer">
+                    <div class="prod-price">
+                        <span>Price</span>TBD
+                    </div>
+                    <button class="prod-notify" onclick="notifyMe(this)">Notify Me</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Product 5 -->
+        <div class="prod-card reveal">
+            <div class="prod-img">
+                <span class="prod-badge">Drop 001</span>
+                <span class="ph-tag">placeholder</span>
+                <div class="prod-img-inner">
+                    <div class="prod-img-icon">
+                        <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M20 30 L35 20 L50 28 L65 20 L80 30 L75 75 L50 82 L25 75 Z" stroke="white" stroke-width="1.5"/>
+                            <circle cx="50" cy="50" r="12" stroke="white" stroke-width="1"/>
+                        </svg>
+                    </div>
+                    <span class="prod-img-label">Product image</span>
+                </div>
+            </div>
+            <div class="prod-info">
+                <div class="prod-name">DIRTY HANDS TEE</div>
+                <div class="prod-sub">Heavyweight — Drop 001 <span class="ph-note">(placeholder)</span></div>
+                <div class="prod-footer">
+                    <div class="prod-price">
+                        <span>Price</span>TBD
+                    </div>
+                    <button class="prod-notify" onclick="notifyMe(this)">Notify Me</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- More Coming Block -->
+        <div class="coming-block reveal">
+            <div class="coming-block-title">MORE DROPPING SOON</div>
+            <p class="coming-block-text">
+                Full collection reveals when Drop 001 goes live. Join the list to see everything first.
+            </p>
+        </div>
+
+    </div>
+</div>
+
+<!-- ─────────────── CTA ─────────────── -->
+<section class="shop-cta">
+    <div class="shop-cta-inner">
+        <p class="shop-cta-label">Drop 001 — Early Access</p>
+        <h2 class="shop-cta-title">GET IT<br>BEFORE IT <span>DROPS.</span></h2>
+        <p class="shop-cta-sub">
+            Drop list members get 48-hour early access before anything goes public. No spam — just the drop notification when it's time.
+        </p>
+        <div class="cta-form">
+            <input type="email" class="cta-input" placeholder="your@email.com" id="shopEmail">
+            <button class="cta-btn" onclick="handleJoin()">Lock In</button>
+        </div>
+    </div>
+</section>
+
+<!-- ─────────────── FOOTER ─────────────── -->
+<footer>
+    <div class="foot-top">
+        <div class="foot-brand">
+            <div class="foot-logo">SKILLED<br><em>SOCIETY</em></div>
+            <p class="foot-desc">Premium streetwear built by hand in New Jersey. Made by those who know the value of craft.</p>
+        </div>
+        <div class="foot-cols">
+            <div class="foot-col">
+                <div class="foot-col-head">Navigate</div>
+                <a href="index.html">Home</a>
+                <a href="about.html">About</a>
+                <a href="shop.html">Shop</a>
+                <a href="index.html#drop">Join the Drop</a>
+            </div>
+            <div class="foot-col">
+                <div class="foot-col-head">Connect</div>
+                <a href="#">Instagram <span class="ph-note">(tbd)</span></a>
+                <a href="#">TikTok <span class="ph-note">(tbd)</span></a>
+                <a href="contact.html">Contact</a>
+            </div>
+        </div>
+    </div>
+    <div class="foot-bottom">
+        <span class="foot-copy">&copy; 2025 Skilled Society. All rights reserved. New Jersey, USA.</span>
+        <span class="foot-sig">NJ &nbsp;&#124;&nbsp; SS</span>
+    </div>
+</footer>
+
+<script>
+gsap.registerPlugin(ScrollTrigger);
+
+// ── Cursor ─────────────────────────────────────────────────────
+const cur = document.getElementById('cur');
+const ring = document.getElementById('ring');
+let mx = 0, my = 0, rx = 0, ry = 0;
+document.addEventListener('mousemove', e => {
+    mx = e.clientX; my = e.clientY;
+    cur.style.left = mx + 'px'; cur.style.top = my + 'px';
+});
+(function tick() {
+    rx += (mx - rx) * 0.11; ry += (my - ry) * 0.11;
+    ring.style.left = rx + 'px'; ring.style.top = ry + 'px';
+    requestAnimationFrame(tick);
+})();
+
+// ── Page entrance ──────────────────────────────────────────────
+gsap.timeline({ delay: 0.1 })
+    .to('#shopTitle', { opacity: 1, y: 0, duration: 0.8, ease: 'power3.out' })
+    .to('#shopMeta',  { opacity: 1, duration: 0.5, ease: 'power3.out' }, '-=0.4');
+
+// ── Scroll reveals ─────────────────────────────────────────────
+gsap.utils.toArray('.reveal').forEach(el => {
+    gsap.to(el, {
+        opacity: 1, y: 0, duration: 0.7, ease: 'power3.out',
+        scrollTrigger: { trigger: el, start: 'top 88%', toggleActions: 'play none none none' }
+    });
+});
+
+// ── Filter tabs ────────────────────────────────────────────────
+document.querySelectorAll('.filter-tab').forEach(tab => {
+    tab.addEventListener('click', function() {
+        document.querySelectorAll('.filter-tab').forEach(t => t.classList.remove('active'));
+        this.classList.add('active');
+    });
+});
+
+// ── Notify Me ──────────────────────────────────────────────────
+function notifyMe(btn) {
+    btn.textContent = 'Added ✓';
+    btn.classList.add('confirmed');
+    setTimeout(() => {
+        btn.textContent = 'Notify Me';
+        btn.classList.remove('confirmed');
+    }, 2500);
+}
+
+// ── CTA form ───────────────────────────────────────────────────
+function handleJoin() {
+    const input = document.getElementById('shopEmail');
+    if (!input.value.includes('@')) {
+        input.style.borderColor = '#884444';
+        setTimeout(() => input.style.borderColor = '', 1200);
+        return;
+    }
+    const btn = document.querySelector('.cta-btn');
+    btn.textContent = 'You\'re In ✓';
+    input.value = '';
+    setTimeout(() => btn.textContent = 'Lock In', 3000);
+}
+</script>
+</body>
+</html>
