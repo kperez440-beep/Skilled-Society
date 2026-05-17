@@ -552,6 +552,40 @@
         /* ── Scroll reveal base ───────────────────────────────── */
         .reveal { opacity: 0; transform: translateY(28px); }
 
+        /* ── Quote scrollytelling lines ───────────────────────── */
+        .quote-line {
+            display: block;
+            opacity: 0;
+            transform: translateY(36px);
+        }
+
+        /* ── Story card hover micro-interactions ──────────────── */
+        .story-card {
+            transition: transform .35s ease, border-color .35s ease;
+            border: 1px solid transparent;
+        }
+        .story-card:hover { transform: translateY(-6px); border-color: var(--orange); }
+        .card-accent { transition: width .3s ease; }
+        .story-card:hover .card-accent { width: 52px; }
+
+        /* ── Placeholder tag ──────────────────────────────────── */
+        .ph-tag {
+            position: absolute;
+            top: 10px; left: 10px;
+            font-size: 7px; font-weight: 600;
+            letter-spacing: .18em; text-transform: uppercase;
+            color: #2E2E2E;
+            border: 1px solid #252525;
+            padding: 3px 8px;
+            pointer-events: none;
+            z-index: 10;
+            background: rgba(12,12,12,.7);
+        }
+        .ph-note {
+            font-size: 9px; color: #2E2E2E;
+            letter-spacing: .12em; font-style: italic;
+        }
+
         /* ── Responsive ───────────────────────────────────────── */
         @media (max-width: 900px) {
             .story-cards { grid-template-columns: 1fr; }
@@ -678,25 +712,26 @@
         <span class="eyebrow-num">01</span>
     </div>
 
-    <div class="story-quote reveal">
-        NO SHORTCUTS.<br>NO EXCUSES.<br>
-        JUST <span class="hi">SKILLED WORK.</span>
+    <div class="story-quote" id="storyQuote">
+        <span class="quote-line">NO SHORTCUTS.</span>
+        <span class="quote-line">NO EXCUSES.</span>
+        <span class="quote-line">JUST <span class="hi">SKILLED WORK.</span></span>
     </div>
 
     <div class="story-cards">
-        <div class="story-card reveal">
+        <div class="story-card" id="sc1">
             <div class="card-num">01</div>
             <div class="card-title">BUILT BY HAND</div>
             <p class="card-text">Every piece designed and printed in-house in NJ. No overseas shortcuts, no compromise. We know what it means to put your name on something and mean it.</p>
             <div class="card-accent"></div>
         </div>
-        <div class="story-card reveal">
+        <div class="story-card" id="sc2">
             <div class="card-num">02</div>
             <div class="card-title">MADE IN NJ</div>
             <p class="card-text">Jersey built. Rooted in the same blue-collar foundation that defines this state — hard work, straight talk, zero pretense. We didn't move to the city. We built it.</p>
             <div class="card-accent"></div>
         </div>
-        <div class="story-card reveal">
+        <div class="story-card" id="sc3">
             <div class="card-num">03</div>
             <div class="card-title">WORN WITH PURPOSE</div>
             <p class="card-text">This isn't fast fashion and it's not for everyone. Limited pieces for people who know the difference between something made right and something made quick.</p>
@@ -724,6 +759,7 @@
     <div class="teaser-grid">
         <!-- Card 1 -->
         <div class="t-card reveal">
+            <span class="ph-tag">placeholder</span>
             <div class="t-card-blur">
                 <div class="t-card-icon">
                     <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -741,6 +777,7 @@
         </div>
         <!-- Card 2 -->
         <div class="t-card reveal">
+            <span class="ph-tag">placeholder</span>
             <div class="t-card-blur">
                 <div class="t-card-icon">
                     <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -762,6 +799,7 @@
         </div>
         <!-- Card 3 -->
         <div class="t-card reveal">
+            <span class="ph-tag">placeholder</span>
             <div class="t-card-blur">
                 <div class="t-card-icon">
                     <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -780,6 +818,7 @@
         </div>
         <!-- Card 4 -->
         <div class="t-card reveal">
+            <span class="ph-tag">placeholder</span>
             <div class="t-card-blur">
                 <div class="t-card-icon">
                     <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -871,9 +910,9 @@
             </div>
             <div class="foot-col">
                 <div class="foot-col-head">Connect</div>
-                <a href="#">Instagram</a>
-                <a href="#">TikTok</a>
-                <a href="#">Contact</a>
+                <a href="#">Instagram <span class="ph-note">(tbd)</span></a>
+                <a href="#">TikTok <span class="ph-note">(tbd)</span></a>
+                <a href="#">Contact <span class="ph-note">(tbd)</span></a>
             </div>
         </div>
     </div>
@@ -951,6 +990,73 @@ gsap.utils.toArray('.reveal').forEach(el => {
         }
     });
 });
+
+// ── Parallax — Hero grid + headline move at different rates ────
+gsap.to('.hero-grid', {
+    yPercent: 28,
+    ease: 'none',
+    scrollTrigger: {
+        trigger: '.hero',
+        start: 'top top',
+        end: 'bottom top',
+        scrub: 1.2
+    }
+});
+gsap.to('.hero-glow', {
+    yPercent: 45,
+    ease: 'none',
+    scrollTrigger: {
+        trigger: '.hero',
+        start: 'top top',
+        end: 'bottom top',
+        scrub: 1.8
+    }
+});
+gsap.to('.hero-h1', {
+    yPercent: 12,
+    ease: 'none',
+    scrollTrigger: {
+        trigger: '.hero',
+        start: 'top top',
+        end: 'bottom top',
+        scrub: 0.8
+    }
+});
+
+// ── Scrollytelling — Quote lines reveal tied to scroll ─────────
+gsap.utils.toArray('.quote-line').forEach((line, i) => {
+    gsap.to(line, {
+        opacity: 1, y: 0,
+        ease: 'power2.out',
+        duration: 1,
+        scrollTrigger: {
+            trigger: '#storyQuote',
+            start: `top ${82 - i * 10}%`,
+            end:   `center ${55 - i * 8}%`,
+            scrub: 0.6
+        }
+    });
+});
+
+// ── Story cards — stagger in from left / bottom / right ────────
+gsap.fromTo('#sc1',
+    { opacity: 0, x: -50 },
+    { opacity: 1, x: 0, duration: 0.8, ease: 'power3.out',
+      scrollTrigger: { trigger: '.story-cards', start: 'top 82%', toggleActions: 'play none none none' }
+    }
+);
+gsap.fromTo('#sc2',
+    { opacity: 0, y: 50 },
+    { opacity: 1, y: 0, duration: 0.8, ease: 'power3.out', delay: 0.12,
+      scrollTrigger: { trigger: '.story-cards', start: 'top 82%', toggleActions: 'play none none none' }
+    }
+);
+gsap.fromTo('#sc3',
+    { opacity: 0, x: 50 },
+    { opacity: 1, x: 0, duration: 0.8, ease: 'power3.out', delay: 0.24,
+      scrollTrigger: { trigger: '.story-cards', start: 'top 82%', toggleActions: 'play none none none' }
+    }
+);
 
 // ── Nav Scroll State ───────────────────────────────────────────
 const nav = document.getElementById('nav');
