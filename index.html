@@ -436,18 +436,19 @@
             max-width: 780px; margin: 0 auto; text-align: center;
             position: relative; z-index: 1;
         }
+        /* Drop section always stays dark — all text hardcoded light */
         .drop-sub {
             font-size: 10px; font-weight: 700;
             letter-spacing: .32em; text-transform: uppercase;
-            color: var(--orange); margin-bottom: 20px;
+            color: #9A8E82; margin-bottom: 20px;
         }
         .drop-h2 {
             font-family: var(--display);
             font-size: clamp(56px, 9.5vw, 128px);
             line-height: .9; letter-spacing: .02em;
-            color: var(--white); margin-bottom: 52px;
+            color: #EDE8E0; margin-bottom: 52px;
         }
-        .drop-h2 span { color: var(--orange); }
+        .drop-h2 span { color: #C8B89A; }
 
         .countdown {
             display: flex; justify-content: center;
@@ -456,47 +457,47 @@
         .cd-unit {
             padding: 24px 36px;
             background: rgba(255,255,255,.04);
-            border: 1px solid var(--gray-border);
+            border: 1px solid #2A2520;
             text-align: center; min-width: 108px;
         }
         .cd-unit + .cd-unit { border-left: none; }
         .cd-num {
             display: block;
             font-family: var(--display); font-size: 60px;
-            line-height: 1; color: var(--white);
+            line-height: 1; color: #EDE8E0;
         }
         .cd-label {
             display: block;
             font-size: 8px; font-weight: 700;
             letter-spacing: .28em; text-transform: uppercase;
-            color: var(--muted); margin-top: 6px;
+            color: #4A4440; margin-top: 6px;
         }
 
         .drop-form { display: flex; max-width: 460px; margin: 0 auto; }
         .drop-input {
             flex: 1;
             background: rgba(255,255,255,.05);
-            border: 1px solid var(--gray-border); border-right: none;
-            color: var(--white);
+            border: 1px solid #2A2520; border-right: none;
+            color: #EDE8E0;
             font-family: var(--body); font-size: 13px;
             padding: 16px 22px; outline: none;
             transition: border-color .2s;
         }
-        .drop-input::placeholder { color: var(--muted); }
-        .drop-input:focus { border-color: var(--orange); }
+        .drop-input::placeholder { color: #4A4440; }
+        .drop-input:focus { border-color: #9A8E82; }
         .drop-btn {
-            background: var(--orange);
-            border: 1px solid var(--orange);
-            color: var(--white);
+            background: #9A8E82;
+            border: 1px solid #9A8E82;
+            color: #1A1816;
             font-family: var(--body); font-size: 10px; font-weight: 700;
             letter-spacing: .2em; text-transform: uppercase;
             padding: 16px 28px; cursor: none;
             transition: background .2s, color .2s;
         }
-        .drop-btn:hover { background: transparent; color: var(--orange); }
+        .drop-btn:hover { background: transparent; color: #9A8E82; }
         .drop-fine {
             margin-top: 16px;
-            font-size: 10px; color: var(--muted); letter-spacing: .06em;
+            font-size: 10px; color: #4A4440; letter-spacing: .06em;
         }
 
         /* ── Footer ───────────────────────────────────────────── */
