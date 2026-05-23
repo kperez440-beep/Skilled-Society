@@ -148,6 +148,27 @@
             transition: background .2s, color .2s;
         }
         .nav-drop:hover { background: var(--orange); color: var(--black); }
+        .nav-burger {
+            display: none;
+            flex-direction: column;
+            justify-content: center;
+            gap: 5px;
+            background: none;
+            border: none;
+            cursor: none;
+            padding: 4px;
+            z-index: 201;
+        }
+        .nav-burger span {
+            display: block;
+            width: 22px;
+            height: 2px;
+            background: var(--white);
+            transition: transform .3s ease, opacity .3s ease;
+        }
+        .nav-burger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+        .nav-burger.open span:nth-child(2) { opacity: 0; transform: scaleX(0); }
+        .nav-burger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
 
         /* ── Hero ─────────────────────────────────────────────── */
         .hero {
@@ -632,7 +653,23 @@
         @media (max-width: 768px) {
             nav { padding: 20px 24px; }
             nav.scrolled { padding: 14px 24px; }
-            .nav-links a:not(.nav-drop) { display: none; }
+            .nav-burger { display: flex; }
+            .nav-links {
+                position: fixed;
+                inset: 0;
+                background: var(--black);
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                gap: 28px;
+                opacity: 0;
+                pointer-events: none;
+                transition: opacity .35s ease;
+                z-index: 200;
+            }
+            .nav-links.open { opacity: 1; pointer-events: all; }
+            .nav-links a:not(.nav-drop) { display: flex; color: var(--white); font-size: clamp(28px, 8vw, 44px); letter-spacing: .12em; }
+            .nav-drop { margin-top: 8px; padding: 14px 36px; font-size: 11px !important; letter-spacing: .22em !important; }
             .hero { padding: 110px 24px 90px; }
             .hero-badge { display: none; }
             .hero-foot { flex-direction: column; }
@@ -673,12 +710,15 @@
 <!-- Nav -->
 <nav id="nav">
     <a href="#" class="nav-logo">SKILLED <em>SOCIETY</em></a>
-    <div class="nav-links">
+    <div class="nav-links" id="navLinks">
         <a href="about.html">About</a>
         <a href="shop.html">Shop</a>
         <a href="#drop">The Drop</a>
         <a href="#drop" class="nav-drop">Join the Drop</a>
     </div>
+    <button class="nav-burger" id="burger" aria-label="Toggle menu">
+        <span></span><span></span><span></span>
+    </button>
 </nav>
 
 <!-- ─────────────── HERO ─────────────── -->
@@ -971,6 +1011,24 @@
 <!-- ═══════════════════════════════════════════════════════════ -->
 <script>
 gsap.registerPlugin(ScrollTrigger);
+
+// ── Hamburger Menu ─────────────────────────────────────────────
+const burger    = document.getElementById('burger');
+const navLinks  = document.getElementById('navLinks');
+if (burger) {
+    burger.addEventListener('click', () => {
+        burger.classList.toggle('open');
+        navLinks.classList.toggle('open');
+        document.body.style.overflow = navLinks.classList.contains('open') ? 'hidden' : '';
+    });
+    navLinks.querySelectorAll('a').forEach(a => {
+        a.addEventListener('click', () => {
+            burger.classList.remove('open');
+            navLinks.classList.remove('open');
+            document.body.style.overflow = '';
+        });
+    });
+}
 
 // ── Custom Cursor ──────────────────────────────────────────────
 const cur  = document.getElementById('cur');
