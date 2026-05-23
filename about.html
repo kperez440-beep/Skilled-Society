@@ -3,8 +3,29 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>About — Skilled Society</title>
-    <meta name="description" content="Skilled Society was built by those who build. New Jersey streetwear rooted in the trades.">
+    <title>About — Skilled Society | New Jersey Streetwear</title>
+    <meta name="description" content="Skilled Society was built by those who build. New Jersey streetwear rooted in the trades. Meet the founders.">
+    <meta name="keywords" content="Skilled Society, about, New Jersey streetwear, trades, founders, roofing, NJ brand">
+    <meta name="author" content="Skilled Society">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://skilled-society.vercel.app/about.html">
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://skilled-society.vercel.app/about.html">
+    <meta property="og:title" content="About — Skilled Society | New Jersey Streetwear">
+    <meta property="og:description" content="Built by those who build. New Jersey streetwear rooted in the trades. Legacy is carried, not copied.">
+    <meta property="og:image" content="https://skilled-society.vercel.app/og-image.jpg">
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="About — Skilled Society">
+    <meta name="twitter:description" content="Built by those who build. New Jersey streetwear rooted in the trades.">
+    <meta name="twitter:image" content="https://skilled-society.vercel.app/og-image.jpg">
+
+    <!-- Favicon placeholder -->
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>$$</text></svg>">
+
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -15,7 +36,7 @@
         :root {
             --black:       #F2EDE5;
             --white:       #1A1816;
-            --orange:      #9E8872;
+            --orange:      #B46A3C;
             --gray:        #EAE4DB;
             --gray-mid:    #DDD7CC;
             --gray-border: #C4BCB2;
@@ -309,18 +330,18 @@
             line-height: 1; letter-spacing: .02em;
             color: #EDE8E0;
         }
-        .cta-strip-text em { font-style: normal; color: #C4A080; }
+        .cta-strip-text em { font-style: normal; color: #D4855A; }
         .cta-strip-btn {
             font-size: 10px; font-weight: 700;
             letter-spacing: .2em; text-transform: uppercase;
             color: #1A1816;
-            background: #9E8872;
-            border: 1px solid #9E8872;
+            background: #B46A3C;
+            border: 1px solid #B46A3C;
             padding: 16px 36px; text-decoration: none;
             transition: background .2s, color .2s;
             cursor: none;
         }
-        .cta-strip-btn:hover { background: transparent; color: #9E8872; }
+        .cta-strip-btn:hover { background: transparent; color: #B46A3C; }
 
         /* ── Footer ───────────────────────────────────────────── */
         footer {
@@ -366,6 +387,14 @@
         }
         .foot-copy { font-size: 10px; color: var(--muted); letter-spacing: .1em; }
         .foot-sig { font-family: var(--display); font-size: 13px; letter-spacing: .32em; color: var(--gray-border); }
+        .foot-signoff {
+            display: flex; align-items: center; gap: 20px;
+            padding: 36px 0 32px;
+            border-bottom: 1px solid var(--gray-border);
+            margin-bottom: 32px;
+        }
+        .foot-emblem { font-family: var(--display); font-size: 36px; letter-spacing: .04em; color: var(--orange); line-height: 1; flex-shrink: 0; }
+        .foot-lock { font-size: 9px; font-weight: 700; letter-spacing: .3em; text-transform: uppercase; color: var(--muted); }
 
         /* ── Reveal ───────────────────────────────────────────── */
         .reveal { opacity: 0; transform: translateY(28px); }
@@ -385,6 +414,8 @@
             .values { padding: 80px 24px; }
             .cta-strip { padding: 60px 24px; }
             footer { padding: 60px 24px 40px; }
+            .foot-top { flex-direction: column; }
+            .foot-cols { gap: 32px; }
         }
     </style>
 </head>
@@ -553,6 +584,10 @@
                 <a href="contact.html">Contact</a>
             </div>
         </div>
+    </div>
+    <div class="foot-signoff">
+        <span class="foot-emblem">$$</span>
+        <span class="foot-lock">Lock the system. Build the brand.</span>
     </div>
     <div class="foot-bottom">
         <span class="foot-copy">&copy; 2025 Skilled Society. All rights reserved. New Jersey, USA.</span>

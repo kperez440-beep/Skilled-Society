@@ -3,8 +3,29 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Shop — Skilled Society</title>
-    <meta name="description" content="Skilled Society Drop 001 — Coming Soon. Join the list for early access to New Jersey's newest streetwear brand.">
+    <title>Shop — Skilled Society | Drop 001</title>
+    <meta name="description" content="Skilled Society Drop 001 — Coming Soon. Join the list for early access to New Jersey's newest streetwear brand. Selective & Respected.">
+    <meta name="keywords" content="Skilled Society shop, Drop 001, New Jersey streetwear, custom tees, NJ clothing, buy streetwear">
+    <meta name="author" content="Skilled Society">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://skilled-society.vercel.app/shop.html">
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://skilled-society.vercel.app/shop.html">
+    <meta property="og:title" content="Shop — Skilled Society | Drop 001">
+    <meta property="og:description" content="Drop 001 incoming. New Jersey streetwear built by hand. Join the list for early access.">
+    <meta property="og:image" content="https://skilled-society.vercel.app/og-image.jpg">
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Shop — Skilled Society | Drop 001">
+    <meta name="twitter:description" content="Drop 001 incoming. New Jersey streetwear built by hand.">
+    <meta name="twitter:image" content="https://skilled-society.vercel.app/og-image.jpg">
+
+    <!-- Favicon placeholder -->
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>$$</text></svg>">
+
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -15,7 +36,7 @@
         :root {
             --black:       #F2EDE5;
             --white:       #1A1816;
-            --orange:      #9E8872;
+            --orange:      #B46A3C;
             --gray:        #EAE4DB;
             --gray-mid:    #DDD7CC;
             --gray-border: #C4BCB2;
@@ -106,7 +127,7 @@
         }
         .drop-banner-dot {
             width: 6px; height: 6px;
-            background: #9E8872; border-radius: 50%;
+            background: #B46A3C; border-radius: 50%;
             animation: pulse 2s ease infinite;
         }
         @keyframes pulse {
@@ -116,7 +137,7 @@
         .drop-banner-text {
             font-size: 10px; font-weight: 600;
             letter-spacing: .28em; text-transform: uppercase;
-            color: #9E8872;
+            color: #B46A3C;
         }
         .drop-banner-text span { color: #EDE8E0; }
 
@@ -237,7 +258,7 @@
         }
         .prod-badge {
             position: absolute; top: 14px; left: 14px;
-            background: #9E8872; color: #1A1816;
+            background: #B46A3C; color: #1A1816;
             font-size: 7px; font-weight: 700;
             letter-spacing: .22em; text-transform: uppercase;
             padding: 4px 10px;
@@ -333,7 +354,7 @@
         .shop-cta-label {
             font-size: 9px; font-weight: 700;
             letter-spacing: .32em; text-transform: uppercase;
-            color: #9E8872; margin-bottom: 20px;
+            color: #B46A3C; margin-bottom: 20px;
         }
         .shop-cta-title {
             font-family: var(--display);
@@ -341,7 +362,7 @@
             line-height: .9; letter-spacing: .02em;
             color: #EDE8E0; margin-bottom: 16px;
         }
-        .shop-cta-title span { color: #C4A080; }
+        .shop-cta-title span { color: #D4855A; }
         .shop-cta-sub {
             font-size: 13px; color: #4A4440;
             line-height: 1.7; margin-bottom: 40px;
@@ -357,16 +378,16 @@
             transition: border-color .2s;
         }
         .cta-input::placeholder { color: #3A3530; }
-        .cta-input:focus { border-color: #9E8872; }
+        .cta-input:focus { border-color: #B46A3C; }
         .cta-btn {
-            background: #9E8872; border: 1px solid #9E8872;
+            background: #B46A3C; border: 1px solid #B46A3C;
             color: #1A1816;
             font-family: var(--body); font-size: 9px; font-weight: 700;
             letter-spacing: .2em; text-transform: uppercase;
             padding: 15px 24px; cursor: none;
             transition: background .2s, color .2s;
         }
-        .cta-btn:hover { background: transparent; color: #9E8872; }
+        .cta-btn:hover { background: transparent; color: #B46A3C; }
 
         /* ── Footer ───────────────────────────────────────────── */
         footer {
@@ -406,6 +427,14 @@
         }
         .foot-copy { font-size: 10px; color: var(--muted); letter-spacing: .1em; }
         .foot-sig { font-family: var(--display); font-size: 13px; letter-spacing: .32em; color: var(--gray-border); }
+        .foot-signoff {
+            display: flex; align-items: center; gap: 20px;
+            padding: 36px 0 32px;
+            border-bottom: 1px solid var(--gray-border);
+            margin-bottom: 32px;
+        }
+        .foot-emblem { font-family: var(--display); font-size: 36px; letter-spacing: .04em; color: var(--orange); line-height: 1; flex-shrink: 0; }
+        .foot-lock { font-size: 9px; font-weight: 700; letter-spacing: .3em; text-transform: uppercase; color: var(--muted); }
 
         /* ── Reveal ───────────────────────────────────────────── */
         .reveal { opacity: 0; transform: translateY(24px); }
@@ -419,13 +448,19 @@
             .nav-links a:not(.nav-drop) { display: none; }
             .drop-banner { padding: 12px 24px; }
             .shop-header { padding: 48px 24px 32px; }
+            .shop-header-top { flex-direction: column; align-items: flex-start; gap: 20px; }
+            .shop-meta { text-align: left; }
+            .filter-bar { flex-direction: column; align-items: flex-start; gap: 12px; }
+            .filter-tabs { flex-wrap: wrap; gap: 8px; }
             .shop-grid-wrap { padding: 32px 24px 80px; }
             .shop-cta { padding: 80px 24px; }
             footer { padding: 60px 24px 40px; }
+            .foot-top { flex-direction: column; }
+            .foot-cols { gap: 32px; }
             .coming-block { padding: 60px 24px; }
         }
         @media (max-width: 540px) {
-            .shop-grid { grid-template-columns: repeat(2, 1fr); }
+            .shop-grid { grid-template-columns: 1fr; }
             .cta-form { flex-direction: column; }
             .cta-input { border-right: 1px solid #2A2520; border-bottom: none; }
         }
@@ -673,6 +708,10 @@
                 <a href="contact.html">Contact</a>
             </div>
         </div>
+    </div>
+    <div class="foot-signoff">
+        <span class="foot-emblem">$$</span>
+        <span class="foot-lock">Lock the system. Build the brand.</span>
     </div>
     <div class="foot-bottom">
         <span class="foot-copy">&copy; 2025 Skilled Society. All rights reserved. New Jersey, USA.</span>
