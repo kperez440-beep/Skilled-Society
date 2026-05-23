@@ -488,31 +488,27 @@
             font-family: var(--display);
             font-size: clamp(56px, 9.5vw, 128px);
             line-height: .9; letter-spacing: .02em;
-            color: #EDE8E0; margin-bottom: 52px;
+            color: #EDE8E0; margin-bottom: 48px;
         }
         .drop-h2 span { color: #D4855A; }
-
-        .countdown {
-            display: flex; justify-content: center;
-            gap: 0; margin-bottom: 52px;
+        .drop-pillars {
+            display: flex; align-items: center; justify-content: center;
+            gap: 16px; flex-wrap: wrap;
+            margin-bottom: 32px;
         }
-        .cd-unit {
-            padding: 24px 36px;
-            background: rgba(255,255,255,.04);
-            border: 1px solid #2A2520;
-            text-align: center; min-width: 108px;
-        }
-        .cd-unit + .cd-unit { border-left: none; }
-        .cd-num {
-            display: block;
-            font-family: var(--display); font-size: 60px;
-            line-height: 1; color: #EDE8E0;
-        }
-        .cd-label {
-            display: block;
-            font-size: 8px; font-weight: 700;
+        .drop-pillars span {
+            font-size: 9px; font-weight: 700;
             letter-spacing: .28em; text-transform: uppercase;
-            color: #4A4440; margin-top: 6px;
+            color: #4A4440;
+        }
+        .drop-pill-dot {
+            width: 4px; height: 4px; border-radius: 50%;
+            background: #B46A3C; flex-shrink: 0;
+        }
+        .drop-body {
+            font-size: 14px; color: #6A6260;
+            line-height: 1.8; letter-spacing: .03em;
+            margin-bottom: 44px;
         }
 
         .drop-form { display: flex; max-width: 460px; margin: 0 auto; }
@@ -678,9 +674,6 @@
             .drop { padding: 80px 24px; }
             footer { padding: 60px 24px 40px; }
             .foot-top { flex-direction: column; }
-            .countdown { gap: 0; }
-            .cd-unit { padding: 18px 20px; min-width: 76px; }
-            .cd-num { font-size: 44px; }
         }
         @media (max-width: 480px) {
             .drop-form { flex-direction: column; }
@@ -927,30 +920,21 @@
         <p class="drop-sub reveal-d">Drop 001 &mdash; New Jersey</p>
         <h2 class="drop-h2 reveal-d">LEGACY IS<br><span>CARRIED,</span><br>NOT COPIED.</h2>
 
-        <div class="countdown">
-            <div class="cd-unit">
-                <span class="cd-num" id="cdDays">00</span>
-                <span class="cd-label">Days</span>
-            </div>
-            <div class="cd-unit">
-                <span class="cd-num" id="cdHrs">00</span>
-                <span class="cd-label">Hours</span>
-            </div>
-            <div class="cd-unit">
-                <span class="cd-num" id="cdMin">00</span>
-                <span class="cd-label">Mins</span>
-            </div>
-            <div class="cd-unit">
-                <span class="cd-num" id="cdSec">00</span>
-                <span class="cd-label">Secs</span>
-            </div>
+        <div class="drop-pillars reveal-d">
+            <span>Made By Hand</span>
+            <span class="drop-pill-dot"></span>
+            <span>New Jersey</span>
+            <span class="drop-pill-dot"></span>
+            <span>Selective &amp; Respected</span>
         </div>
 
+        <p class="drop-body reveal-d">We don't rush craft. When Drop 001 is ready,<br>the people on this list hear first.</p>
+
         <div class="drop-form reveal-d">
-            <input type="email" class="drop-input" placeholder="Enter your email" id="dropEmail">
-            <button class="drop-btn" onclick="handleJoin('dropEmail', this)">Lock In</button>
+            <input type="email" class="drop-input" placeholder="Your email address" id="dropEmail">
+            <button class="drop-btn" onclick="handleJoin('dropEmail', this)">Get Notified</button>
         </div>
-        <p class="drop-fine reveal-d">No spam. First access only. Unsubscribe anytime.</p>
+        <p class="drop-fine reveal-d">First access only. No noise. Unsubscribe anytime.</p>
     </div>
 </section>
 
@@ -1168,27 +1152,6 @@ window.addEventListener('scroll', () => {
     nav.classList.toggle('scrolled', window.scrollY > 60);
 }, { passive: true });
 
-// ── Countdown ─────────────────────────────────────────────────
-// Set the drop date here — update this when Claudia confirms the date
-const DROP_DATE = new Date(Date.now() + 45 * 24 * 60 * 60 * 1000); // 45 days from now
-
-function pad(n) { return String(n).padStart(2, '0'); }
-
-function tick() {
-    const diff = DROP_DATE - Date.now();
-    if (diff <= 0) {
-        ['cdDays','cdHrs','cdMin','cdSec'].forEach(id => {
-            document.getElementById(id).textContent = '00';
-        });
-        return;
-    }
-    document.getElementById('cdDays').textContent = pad(Math.floor(diff / 86400000));
-    document.getElementById('cdHrs').textContent  = pad(Math.floor(diff % 86400000 / 3600000));
-    document.getElementById('cdMin').textContent  = pad(Math.floor(diff % 3600000  / 60000));
-    document.getElementById('cdSec').textContent  = pad(Math.floor(diff % 60000   / 1000));
-}
-tick();
-setInterval(tick, 1000);
 
 // ── Email Join Handler ─────────────────────────────────────────
 function handleJoin(inputId, btn) {
