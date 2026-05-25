@@ -34,13 +34,13 @@
 
     <style>
         :root {
-            --black:       #F2EDE5;
-            --white:       #1A1816;
-            --orange:      #B46A3C;
-            --gray:        #EAE4DB;
-            --gray-mid:    #DDD7CC;
-            --gray-border: #C4BCB2;
-            --muted:       #8A837A;
+            --black:       #111112;
+            --white:       #EAEAEA;
+            --orange:      #E05A16;
+            --gray:        #181A1C;
+            --gray-mid:    #1E2124;
+            --gray-border: #26292C;
+            --muted:       #8C9196;
             --display:     'Bebas Neue', sans-serif;
             --body:        'Inter', sans-serif;
         }
@@ -70,7 +70,7 @@
         .cursor-ring {
             position: fixed;
             width: 38px; height: 38px;
-            border: 1px solid rgba(255,106,0,.35);
+            border: 1px solid rgba(224,90,22,.4);
             border-radius: 50%;
             pointer-events: none;
             z-index: 9998;
@@ -117,7 +117,7 @@
             border-bottom: 1px solid transparent;
         }
         nav.scrolled {
-            background: rgba(242,237,229,.96);
+            background: rgba(17,17,18,.96);
             backdrop-filter: blur(14px);
             padding: 18px 48px;
             border-color: var(--gray-border);
@@ -145,7 +145,7 @@
             border: 1px solid var(--orange);
             padding: 9px 22px;
             text-decoration: none;
-            transition: background .2s, color .2s;
+            transition: background .3s cubic-bezier(0.16,1,0.3,1), color .3s cubic-bezier(0.16,1,0.3,1), border-color .3s cubic-bezier(0.16,1,0.3,1);
         }
         .nav-drop:hover { background: var(--orange); color: var(--black); }
         .nav-burger {
@@ -180,14 +180,14 @@
         .hero-grid {
             position: absolute; inset: 0;
             background-image:
-                linear-gradient(rgba(26,24,22,.05) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(26,24,22,.05) 1px, transparent 1px);
+                linear-gradient(rgba(234,234,234,.04) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(234,234,234,.04) 1px, transparent 1px);
             background-size: 64px 64px;
             pointer-events: none;
         }
         .hero-glow {
             position: absolute; inset: 0;
-            background: radial-gradient(ellipse at 65% 50%, rgba(122,110,98,.08) 0%, transparent 55%);
+            background: radial-gradient(ellipse at 65% 50%, rgba(224,90,22,.05) 0%, transparent 55%);
             pointer-events: none;
         }
         /* corner badge */
@@ -263,7 +263,7 @@
             color: var(--white);
             font-family: var(--body); font-size: 13px;
             padding: 15px 20px; outline: none;
-            transition: border-color .2s;
+            transition: border-color .3s cubic-bezier(0.16,1,0.3,1);
         }
         .capture-input::placeholder { color: var(--muted); }
         .capture-input:focus { border-color: var(--orange); }
@@ -274,7 +274,7 @@
             font-family: var(--body); font-size: 10px; font-weight: 700;
             letter-spacing: .18em; text-transform: uppercase;
             padding: 15px 26px;
-            cursor: none; transition: background .2s, color .2s;
+            cursor: none; transition: background .3s cubic-bezier(0.16,1,0.3,1), color .3s cubic-bezier(0.16,1,0.3,1), border-color .3s cubic-bezier(0.16,1,0.3,1);
             white-space: nowrap;
         }
         .capture-btn:hover { background: transparent; color: var(--orange); }
@@ -416,8 +416,8 @@
         }
         .t-card {
             position: relative; aspect-ratio: 3/4;
-            background: #181410;
-            border: 1px solid #2A2520;
+            background: #181A1C;
+            border: 1px solid #26292C;
             overflow: hidden; cursor: none;
         }
         .t-card-blur {
@@ -429,14 +429,14 @@
         .t-card:hover .t-card-blur { filter: blur(2px); }
         .t-card-icon {
             width: 56%; aspect-ratio: 1;
-            background: #221E1A;
-            border: 1px solid #2A2520;
+            background: #1E2124;
+            border: 1px solid #26292C;
             display: flex; align-items: center; justify-content: center;
         }
         .t-card-icon svg { width: 42%; opacity: .18; }
         .t-card-overlay {
             position: absolute; inset: 0;
-            background: linear-gradient(to top, rgba(10,10,10,.85) 0%, transparent 60%);
+            background: linear-gradient(to top, rgba(17,17,18,.92) 0%, transparent 60%);
             display: flex; flex-direction: column;
             align-items: center; justify-content: flex-end;
             padding: 22px; gap: 7px;
@@ -463,7 +463,7 @@
 
         /* ── Drop ─────────────────────────────────────────────── */
         .drop {
-            background: #111111;
+            background: #181A1C;
             border-top: 1px solid var(--gray-border);
             padding: 110px 48px;
             position: relative; overflow: hidden;
@@ -471,7 +471,7 @@
         .drop::before {
             content: '';
             position: absolute; inset: 0;
-            background: radial-gradient(ellipse at 50% 100%, rgba(242,237,229,.04) 0%, transparent 65%);
+            background: radial-gradient(ellipse at 50% 100%, rgba(234,234,234,.03) 0%, transparent 65%);
             pointer-events: none;
         }
         .drop-inner {
@@ -482,15 +482,15 @@
         .drop-sub {
             font-size: 10px; font-weight: 700;
             letter-spacing: .32em; text-transform: uppercase;
-            color: #B46A3C; margin-bottom: 20px;
+            color: #E05A16; margin-bottom: 20px;
         }
         .drop-h2 {
             font-family: var(--display);
             font-size: clamp(56px, 9.5vw, 128px);
             line-height: .9; letter-spacing: .02em;
-            color: #EDE8E0; margin-bottom: 48px;
+            color: #EAEAEA; margin-bottom: 48px;
         }
-        .drop-h2 span { color: #D4855A; }
+        .drop-h2 span { color: #F07040; }
         .drop-pillars {
             display: flex; align-items: center; justify-content: center;
             gap: 16px; flex-wrap: wrap;
@@ -499,14 +499,14 @@
         .drop-pillars span {
             font-size: 9px; font-weight: 700;
             letter-spacing: .28em; text-transform: uppercase;
-            color: #4A4440;
+            color: #8C9196;
         }
         .drop-pill-dot {
             width: 4px; height: 4px; border-radius: 50%;
-            background: #B46A3C; flex-shrink: 0;
+            background: #E05A16; flex-shrink: 0;
         }
         .drop-body {
-            font-size: 14px; color: #6A6260;
+            font-size: 14px; color: #8C9196;
             line-height: 1.8; letter-spacing: .03em;
             margin-bottom: 44px;
         }
@@ -514,28 +514,28 @@
         .drop-form { display: flex; max-width: 460px; margin: 0 auto; }
         .drop-input {
             flex: 1;
-            background: rgba(255,255,255,.05);
-            border: 1px solid #2A2520; border-right: none;
-            color: #EDE8E0;
+            background: rgba(255,255,255,.04);
+            border: 1px solid #26292C; border-right: none;
+            color: #EAEAEA;
             font-family: var(--body); font-size: 13px;
             padding: 16px 22px; outline: none;
-            transition: border-color .2s;
+            transition: border-color .3s cubic-bezier(0.16,1,0.3,1);
         }
-        .drop-input::placeholder { color: #4A4440; }
-        .drop-input:focus { border-color: #B46A3C; }
+        .drop-input::placeholder { color: #8C9196; }
+        .drop-input:focus { border-color: #E05A16; }
         .drop-btn {
-            background: #B46A3C;
-            border: 1px solid #B46A3C;
-            color: #1A1816;
+            background: #E05A16;
+            border: 1px solid #E05A16;
+            color: #111112;
             font-family: var(--body); font-size: 10px; font-weight: 700;
             letter-spacing: .2em; text-transform: uppercase;
             padding: 16px 28px; cursor: none;
-            transition: background .2s, color .2s;
+            transition: background .3s cubic-bezier(0.16,1,0.3,1), color .3s cubic-bezier(0.16,1,0.3,1), border-color .3s cubic-bezier(0.16,1,0.3,1);
         }
-        .drop-btn:hover { background: transparent; color: #B46A3C; }
+        .drop-btn:hover { background: transparent; color: #E05A16; }
         .drop-fine {
             margin-top: 16px;
-            font-size: 10px; color: #4A4440; letter-spacing: .06em;
+            font-size: 10px; color: #8C9196; letter-spacing: .06em;
         }
 
         /* ── Footer ───────────────────────────────────────────── */
@@ -629,15 +629,15 @@
             top: 10px; left: 10px;
             font-size: 7px; font-weight: 600;
             letter-spacing: .18em; text-transform: uppercase;
-            color: #4A4540;
-            border: 1px solid #383330;
+            color: #8C9196;
+            border: 1px solid #26292C;
             padding: 3px 8px;
             pointer-events: none;
             z-index: 10;
-            background: rgba(15,12,10,.75);
+            background: rgba(17,17,18,.85);
         }
         .ph-note {
-            font-size: 9px; color: #2E2E2E;
+            font-size: 9px; color: #8C9196;
             letter-spacing: .12em; font-style: italic;
         }
 

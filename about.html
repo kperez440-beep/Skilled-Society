@@ -34,13 +34,13 @@
 
     <style>
         :root {
-            --black:       #F2EDE5;
-            --white:       #1A1816;
-            --orange:      #B46A3C;
-            --gray:        #EAE4DB;
-            --gray-mid:    #DDD7CC;
-            --gray-border: #C4BCB2;
-            --muted:       #8A837A;
+            --black:       #111112;
+            --white:       #EAEAEA;
+            --orange:      #E05A16;
+            --gray:        #181A1C;
+            --gray-mid:    #1E2124;
+            --gray-border: #26292C;
+            --muted:       #8C9196;
             --display:     'Bebas Neue', sans-serif;
             --body:        'Inter', sans-serif;
         }
@@ -70,7 +70,7 @@
         .cursor-ring {
             position: fixed;
             width: 38px; height: 38px;
-            border: 1px solid rgba(122,110,98,.4);
+            border: 1px solid rgba(224,90,22,.4);
             border-radius: 50%;
             pointer-events: none;
             z-index: 9998;
@@ -88,7 +88,7 @@
             border-bottom: 1px solid transparent;
         }
         nav.scrolled {
-            background: rgba(242,237,229,.96);
+            background: rgba(17,17,18,.96);
             backdrop-filter: blur(14px);
             padding: 18px 48px;
             border-color: var(--gray-border);
@@ -116,7 +116,7 @@
             border: 1px solid var(--orange);
             padding: 9px 22px;
             text-decoration: none;
-            transition: background .2s, color .2s;
+            transition: background .3s cubic-bezier(0.16,1,0.3,1), color .3s cubic-bezier(0.16,1,0.3,1), border-color .3s cubic-bezier(0.16,1,0.3,1);
         }
         .nav-drop:hover { background: var(--orange); color: var(--black); }
         .nav-burger {
@@ -137,8 +137,8 @@
         .page-hero-grid {
             position: absolute; inset: 0;
             background-image:
-                linear-gradient(rgba(26,24,22,.05) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(26,24,22,.05) 1px, transparent 1px);
+                linear-gradient(rgba(234,234,234,.04) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(234,234,234,.04) 1px, transparent 1px);
             background-size: 64px 64px;
             pointer-events: none;
         }
@@ -327,7 +327,7 @@
 
         /* ── CTA Strip ────────────────────────────────────────── */
         .cta-strip {
-            background: #111111;
+            background: #181A1C;
             padding: 80px 48px;
             display: flex; align-items: center;
             justify-content: space-between; flex-wrap: wrap; gap: 32px;
@@ -336,20 +336,20 @@
             font-family: var(--display);
             font-size: clamp(32px, 4vw, 56px);
             line-height: 1; letter-spacing: .02em;
-            color: #EDE8E0;
+            color: #EAEAEA;
         }
-        .cta-strip-text em { font-style: normal; color: #D4855A; }
+        .cta-strip-text em { font-style: normal; color: #F07040; }
         .cta-strip-btn {
             font-size: 10px; font-weight: 700;
             letter-spacing: .2em; text-transform: uppercase;
-            color: #1A1816;
-            background: #B46A3C;
-            border: 1px solid #B46A3C;
+            color: #111112;
+            background: #E05A16;
+            border: 1px solid #E05A16;
             padding: 16px 36px; text-decoration: none;
-            transition: background .2s, color .2s;
+            transition: background .3s cubic-bezier(0.16,1,0.3,1), color .3s cubic-bezier(0.16,1,0.3,1), border-color .3s cubic-bezier(0.16,1,0.3,1);
             cursor: none;
         }
-        .cta-strip-btn:hover { background: transparent; color: #B46A3C; }
+        .cta-strip-btn:hover { background: transparent; color: #E05A16; }
 
         /* ── Footer ───────────────────────────────────────────── */
         footer {
